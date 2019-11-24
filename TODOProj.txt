@@ -1,0 +1,62 @@
+4 tipuri de "useri" : neinregistrat, admin, manager echipa, membru echipa
+
+User neinregistrat --> vede numai pagina de prezentare, "Login" si "Create account"
+
+Orice user --> creeaza proj --> devine manager pt proj respectiv
+
+Manager --> adauga/sterge task-uri
+Manager --> adauga membri
+Manager --> asigneaza taskuri membrilor
+Manager --> poate modifica statusul oricarui task
+
+Membru --> adauga/editeaza/sterge comentarii proprii la task-uri
+Membru --> poate vizualiza numai task-urile proiectelor din care face parte
+Membru --> poate modifica statusul unui task primit
+
+Status task: not started, in progress, completed
+
+Echipa --> pagina cu task-uri
+
+Structura task: Titlu, Descriere, Status, Comm, StartDate, EndDate
+
+Admin --> sterge task-uri
+Admin --> sterge comentarii
+Admin --> sterge echipe
+Admin --> activeaza/revoca drepturile utilizatorilor
+
+Echipa == Proiect
+__________________________________________________
+
+Structura db:
+
+Users : Id, FirstName, LastName, IsAdmin, LastUpdate
+Teams: Id, Title, ManagerId, LastUpdate
+Projects: Id, Title, TeamId, Description, LastUpdate 
+Tasks: Id, Title, Description, Status, ProjectId, AssignedUserId, StartDate, EndDate, LastUpdate
+Comments: Id, Content, TaskId, UserId, DateAdded, LastUpdate
+UsersToTeams: UserId, TeamId
+
+___________________________________________________
+
+Pagini:
+	1. Pagina prezentare
+	2. Login
+	3. Create account
+	4. Dashboard: 
+		- admin: toate echipele; toate proiectele; toti userii
+		- not admin: echipele din care faci parte; proiectele din care faci parte; creare proiect;
+	5. Echipe:
+		- admin: listare toate echipele
+		- not admin: listare toate echipele din care faci parte
+	6. Proiecte:
+		- admin: listare toate proiectele
+		- not admin: listare toate proiectele din care faci parte
+	7. Useri:
+		- admin: lista cu toti userii + link catre info despre user
+		- not admin: lista cu toti userii
+	8. O echipa:
+		- lista cu toate proiectele
+		- lista cu toti membrii echipei
+	9. Un proiect:
+		- lista cu task-uri + rezumat fiecare task
+	
