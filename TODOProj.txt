@@ -29,7 +29,7 @@ __________________________________________________
 
 Structura db:
 
-Users : Id, FirstName, LastName, IsAdmin, LastUpdate
+Users : Id, FirstName, LastName, Username, Password, E-mail, IsAdmin, LastUpdate
 Teams: Id, Title, ManagerId, LastUpdate
 Projects: Id, Title, TeamId, Description, LastUpdate 
 Tasks: Id, Title, Description, Status, ProjectId, AssignedUserId, StartDate, EndDate, LastUpdate
