@@ -39,24 +39,24 @@ UsersToTeams: UserId, TeamId
 ___________________________________________________
 
 Pagini:
-	1. Pagina prezentare
-	2. Login
-	3. Create account
-	4. Dashboard: 
+	1. Pagina prezentare - I
+	2. Login - R
+	3. Create account - R
+	4. Dashboard: - I & R
 		- admin: toate echipele; toate proiectele; toti userii
 		- not admin: echipele din care faci parte; proiectele din care faci parte; creare proiect;
-	5. Echipe:
+	5. Echipe: - R
 		- admin: listare toate echipele
 		- not admin: listare toate echipele din care faci parte
-	6. Proiecte:
+	6. Proiecte: - I
 		- admin: listare toate proiectele
 		- not admin: listare toate proiectele din care faci parte
-	7. Useri:
+	7. Useri: - R
 		- admin: lista cu toti userii + link catre info despre user
 		- not admin: lista cu toti userii
-	8. O echipa:
+	8. O echipa: - I
 		- lista cu toate proiectele
 		- lista cu toti membrii echipei
-	9. Un proiect:
+	9. Un proiect: - R
 		- lista cu task-uri + rezumat fiecare task
-	
+___________________________________________________
