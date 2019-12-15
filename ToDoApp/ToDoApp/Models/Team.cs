@@ -21,7 +21,7 @@ namespace ToDoApp.Models
         [Required]
         public DateTime LastUpdate { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
     }

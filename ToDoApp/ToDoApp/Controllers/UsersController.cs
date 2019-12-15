@@ -9,13 +9,13 @@ namespace ToDoApp.Controllers
 {
     public class UsersController : Controller
     {
-        private UserDBContext db = new UserDBContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Users
         public ActionResult Index()
         {
             var users = from user in db.Users
-                        orderby user.UserId
+                        orderby user.Id
                         select user;
             ViewBag.Users = users;
             return View();
