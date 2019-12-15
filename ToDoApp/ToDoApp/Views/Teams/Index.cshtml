@@ -1,8 +1,42 @@
 ﻿@{
     ViewBag.Title = "Index";
 }
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div class="dashboard-content">
-    <h2 style="text-align:center;">Teams</h2>
+    <h2 style="text-align:center; display: inline; margin-left: 42%;">Teams</h2>
+    <a href="" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
+
+    <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none;">
+        <tr>
+            <th>Team</th>
+            <th>No. of employees</th>
+            <th>No. of projects</th>
+        <tr>
+            <td>Team 1</td>
+            <td>5</td>
+            <td>10</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Team 2</td>
+            <td>0</td>
+            <td>0</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Team 4</td>
+            <td>10</td>
+            <td>20</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Team 3</td>
+            <td>2</td>
+            <td>5</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+    </table>
+
 </div>
 
 
@@ -13,5 +47,18 @@
         background-color: #f1f1f1;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        padding-left: 1%;
     }
 </style>
