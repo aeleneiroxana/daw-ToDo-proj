@@ -18,6 +18,7 @@ namespace ToDoApp.Models
             return userIdentity;
         }
 
+        public virtual ICollection<Project> Projects {get; set;}
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -36,5 +37,6 @@ namespace ToDoApp.Models
         {
             return new ApplicationDbContext();
         }
+
     }
 }

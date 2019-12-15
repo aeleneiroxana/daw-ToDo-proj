@@ -14,8 +14,8 @@ namespace ToDoApp
     {
         protected void Application_Start()
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskDBContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CommentDBContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskDBContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ProjectDBContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TeamDBContext>());
 

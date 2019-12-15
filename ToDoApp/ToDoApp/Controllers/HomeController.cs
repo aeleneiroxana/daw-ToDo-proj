@@ -16,6 +16,7 @@ namespace ToDoApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Dashboard()
         {
             return View();

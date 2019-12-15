@@ -12,11 +12,10 @@ namespace ToDoApp.Controllers
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Users
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
         {
-            var users = from user in db.Users
-                        orderby user.Id
-                        select user;
+            List<ApplicationUser> users = db.Users.ToList();
             ViewBag.Users = users;
             return View();
         }

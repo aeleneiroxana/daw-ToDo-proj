@@ -9,6 +9,7 @@ namespace ToDoApp.Controllers
     public class TeamsController : Controller
     {
         // GET: Teams
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
         {
             return View();
