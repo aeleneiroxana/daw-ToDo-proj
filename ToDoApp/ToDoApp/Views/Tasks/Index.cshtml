@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<div class="dashboard-content">
+    <h2 style="text-align:center; display: inline; margin-left: 42%;">Tasks</h2>
+    <a href="" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
+
+    <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none;">
+        <tr>
+            <th>Task</th>
+            <th>Status</th>
+            <th>Project</th>
+            <th>Manager</th>
+        </tr>
+        <tr>
+            <td>task.Title</td>
+            <td>task.Status</td>
+            <td>task.ProjectId</td>
+            <td>task.ProjectId</td>
+            <td style="border: none; text-align: center; width: 180px"><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">details</a><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">edit</a><a href="" style="color: black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">delete</a></td>
+        </tr>
+        @*<tr>
+            <td>Title</td>
+            <td>ManagerId</td>
+            <td style="border: none; text-align: center; width: 180px"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">edit</a><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">delete</a></td>
+        </tr>*@
+
+        @foreach (var task in ViewBag.Tasks)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Status</td>
+                <td>@task.ProjectId</td>
+                <td>@task.ProjectId</td>
+                <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Edit", "Tasks", new { id = task.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Tasks", new { id = task.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Tasks", new { id = task.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
+            </tr>
+        }
+
+        @*<tr>
+            <td>Project 1</td>
+            <td>Alexandru</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Project 2</td>
+            <td>Mihail</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Project 4</td>
+            <td>Virgil</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>
+        <tr>
+            <td>Project 3</td>
+            <td>Alexandra</td>
+            <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
+        </tr>*@
+    </table>
+
+</div>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        padding-left: 1%;
+    }
+
+    .dashboard-content {
+        width: 90%;
+        height: 100%;
+        background-color: #f1f1f1;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+</style>

@@ -1,22 +1,44 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ToDoApp.Models;
+
 
 namespace ToDoApp.Controllers
 {
     public class UsersController : Controller
     {
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
+     
         // GET: Users
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
         {
+            if (User.IsInRole("Administrator"))
+                ViewBag.Users = db.Users.ToList();
+            else
+            {
+                List<UserToProject> userToProjects = db.UsersToProjects.ToList();
+                ViewBag.Users = db.Users.ToList().FindAll(x => userToProjects.Exists(y => y.UserId == x.Id));
+            }
             return View();
         }
 
-        // GET: Users/Details/5
+        // GET: Users/Details
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
+            //if (User.IsInRole("Administrator"))
+            //{
+            //    ApplicationUser item = db.Users.FirstOrDefault(x => x.Id == id);
+            //}
+            //else
+            //    return RedirectToAction("Index");
             return View();
         }
 

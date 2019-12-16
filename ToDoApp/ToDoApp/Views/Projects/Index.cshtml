@@ -10,7 +10,24 @@
         <tr>
             <th>Project</th>
             <th>Manager</th>
+        </tr>
+        @*<tr>
+            <td>Title</td>
+            <td>ManagerId</td>
+            <td style="border: none; text-align: center; width: 180px"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">edit</a><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">delete</a></td>
+        </tr>*@
+
+        @foreach (var project in ViewBag.Projects)
+        {
         <tr>
+            <td>@project.Title</td>
+            <td>@project.UserId</td>
+            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Edit", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Projects", new {id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
+        
+        </tr>
+        }
+
+        @*<tr>
             <td>Project 1</td>
             <td>Alexandru</td>
             <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
@@ -29,7 +46,7 @@
             <td>Project 3</td>
             <td>Alexandra</td>
             <td style="border: none; text-align: center;"><a href="" style="height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #6bd9ed; border-radius: 10px;">details</a></td>
-        </tr>
+        </tr>*@
     </table>
 
 </div>
@@ -55,4 +72,6 @@
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
     }
+
+
 </style>
