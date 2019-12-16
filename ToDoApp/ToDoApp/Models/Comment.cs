@@ -19,7 +19,7 @@ namespace ToDoApp.Models
         public int TaskId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public DateTime DateAdded { get; set; }

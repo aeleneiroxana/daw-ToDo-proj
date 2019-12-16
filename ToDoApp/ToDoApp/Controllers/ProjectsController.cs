@@ -12,23 +12,41 @@ namespace ToDoApp.Controllers
 {
     public class ProjectsController : Controller
     {
-        private readonly ProjectDBContext db = new ProjectDBContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
-        private readonly ApplicationDbContext userContextdb = new ApplicationDbContext();
         // GET: Projects
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
         {
-            ViewBag.proj = db.Projects.ToList();
+            if (User.IsInRole("Administrator"))
+                ViewBag.Projects = db.Projects.ToList();
+            else
+            {
+                List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
+                ViewBag.Projects = db.Projects.ToList().FindAll(x => userProjects.Exists(y => y.ProjectId == x.ProjectId));
+            }
             return View();
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
-            Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
-            if (item != null)
+
+            if (User.IsInRole("Administrator"))
+            {
+                Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
+                if (item != null)
+                    return View(item);
+                else
+                    return RedirectToAction("Index");
+            }
+
+            List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId.ToString() == User.Identity.GetUserId());
+            if (userProjects.Exists(x => x.ProjectId == id))
+            {
+                Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
                 return View(item);
+            }
             else
                 return RedirectToAction("Index");
         }
@@ -37,7 +55,9 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Create()
         {
-            return View();
+            Project project = new Project();
+            project.UserId = User.Identity.GetUserId();
+            return View(project);
         }
 
         // POST: Projects/Create
@@ -48,14 +68,15 @@ namespace ToDoApp.Controllers
 
             if (ModelState.IsValid)
             {
-                ApplicationUser user = userContextdb.Users.FirstOrDefault(x => x.Id == User.Identity.GetUserId());
-                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContextdb));
+                ApplicationUser user = db.Users.FirstOrDefault(x => x.Id == User.Identity.GetUserId());
+                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
                 if (!UserManager.GetRoles(user.Id).Contains("Manager"))
                     UserManager.AddToRole(user.Id, "Manager");
 
-                //TODO: link project with manager, not team
-
+                db.Projects.Add(project);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(project);
         }
@@ -64,48 +85,53 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Edit(int id)
         {
-            return View();
+            Project project;
+            if (User.IsInRole("Administrator"))
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
+            else
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.UserId == User.Identity.GetUserId());
+            if (project != null)
+                return View(project);
+
+            return RedirectToAction("Index");
         }
 
         // POST: Projects/Edit/5
         [HttpPost]
         [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Project project)
         {
-            try
-            {
-                // TODO: Add update logic here
+            Project item = db.Projects.Find(id);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
             {
-                return View();
+                if (ModelState.IsValid)
+                {
+                    if (TryUpdateModel(item))
+                    {
+                        item.Description = project.Description;
+                        item.Title = project.Title;
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                }
+                return View(project);
             }
+            return RedirectToAction("Index");
         }
 
         // GET: Projects/Delete/5
         [Authorize(Roles = "Administrator,Manager")]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: Projects/Delete/5
-        [HttpPost]
-        [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+            Project item = db.Projects.Find(id);
+            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                db.Projects.Remove(item);
+                db.SaveChanges();
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         [NonAction]
@@ -113,7 +139,7 @@ namespace ToDoApp.Controllers
         {
             var selectList = new List<SelectListItem>();
 
-            var roles = from role in userContextdb.Roles select role;
+            var roles = from role in db.Roles select role;
             foreach (var role in roles)
             {
                 selectList.Add(new SelectListItem

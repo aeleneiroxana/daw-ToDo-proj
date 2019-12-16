@@ -16,7 +16,7 @@ namespace ToDoApp.Models
         public string Title { get; set; }
 
         [Required]
-        public int TeamId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -24,7 +24,7 @@ namespace ToDoApp.Models
         [Required]
         public DateTime LastUpdate { get; set; }
 
-        public virtual Team Team { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; }
     }
