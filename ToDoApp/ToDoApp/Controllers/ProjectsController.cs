@@ -19,10 +19,19 @@ namespace ToDoApp.Controllers
         {
             if (User.IsInRole("Administrator"))
             {
+                ViewBag.HasRights = true;
                 ViewBag.Projects = db.Projects.ToList();
             }
             else
             {
+                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                string currentUserId = User.Identity.GetUserId();
+                ApplicationUser user = db.Users.FirstOrDefault(x => x.Id == currentUserId);
+
+                if (User.IsInRole("Manager") || UserManager.GetRoles(user.Id).Contains("Manager"))
+                {
+                    ViewBag.HasRights = true;
+                }
                 List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
                 ViewBag.Projects = db.Projects.ToList().FindAll(x => userProjects.Exists(y => y.ProjectId == x.ProjectId));
             }

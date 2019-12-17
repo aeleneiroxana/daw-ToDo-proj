@@ -34,18 +34,14 @@
             <td>
                 @if (ViewBag.HasRights)
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.TeamId })
-                    @Html.Display("         ")
-                    @Html.ActionLink("Add task", "AddTask")
-                    @Html.Display(" | ")
-                    @Html.ActionLink("Add member", "AddMember", new { teamId = item.TeamId })
-                    @Html.Display(" | ")
+                    @Html.ActionLink("Edit ", "Edit", new { id = item.TeamId })
+                    @Html.ActionLink("Add task ", "AddTask")
+                    @Html.ActionLink("Add member ", "AddMember", new { teamId = item.TeamId })
                 }
-                @Html.ActionLink("Details", "Details", new { id = item.TeamId })
+                @Html.ActionLink("Details ", "Details", new { id = item.TeamId })
                 @if (ViewBag.HasRights)
                 {
-                    @Html.Display(" | ")
-                    @Html.ActionLink("Delete", "Delete", new { id = item.TeamId })}
+                    @Html.ActionLink("Delete ", "Delete", new { id = item.TeamId })}
             </td>
         </tr>
     }
