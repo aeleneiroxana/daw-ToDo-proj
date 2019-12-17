@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 
 namespace ToDoApp.Models
@@ -15,8 +16,9 @@ namespace ToDoApp.Models
         [Required]
         public string Title { get; set; }
 
-        [Required]
         public string UserId { get; set; }
+
+        public int TeamId { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -24,7 +26,9 @@ namespace ToDoApp.Models
         [Required]
         public DateTime LastUpdate { get; set; }
 
-        //public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
+        public virtual Team Team { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; }
     }

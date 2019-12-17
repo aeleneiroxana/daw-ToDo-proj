@@ -1,0 +1,30 @@
+﻿@model ToDoApp.Models.UserToTeam
+
+@{
+    ViewBag.Title = "AddMember";
+}
+
+<h2>Add Member</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("TeamId", Model.TeamId)
+    <div class="form-horizontal">
+
+        <label>Select member to add</label>
+
+        @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Members, "Value", "Text"),
+            "Select member", new { @class = "form-control" })
+
+        @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+        <br />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

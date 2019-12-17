@@ -1,79 +1,74 @@
-﻿@*@using PassDatainMVC.Models*@
+﻿@model ToDoApp.Models.Project
+
 @{
     ViewBag.Title = "Edit";
 }
 
-@*@model PassDatainMVC.Models.Record*@
+<h2>Edit</h2>
 
-    <div class="dashboard-content">
-        <h2 style="color:black; text-align:center; display: inline; margin-left: 42%;">Project @Model.ProjectId</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
 
-        <h3>Detaliile proiectului</h3>
-        <div class="edit_p_1" style="padding-top: 2%;">
-            <div style="margin-left: 5%;">
-                <div style="display: inline;"><h4 style="display: inline; margin-top: 50px;">Manager Proiect: </h4></div>
-                <div style=" margin-bottom:10px; display: inline;"><h4 style="display: inline;">@Model.UserId</h4></div>
-            </div>
-
-            <div style="margin-left: 5%;">
-                <h4 style="display: inline; margin-top: 50px;">Last update: </h4>
-                <h4 style="display: inline; margin-top: 50px;">@Model.LastUpdate</h4>
-            </div>
-
-            <div style="margin-left: 5%;">
-                <h4 style="display: inline; margin-top: 50px;">Projects No. of tasks: </h4>
-                <h4 style="display: inline; margin-top: 50px;">213123</h4>
+    <div class="form-horizontal">
+        <h4>Project</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <h3>Descrierea proiectului</h3>
-        <div class="edit_p_2" style="padding-top: 2%;">
-            <h3 >
-                @Model.Description
-            </h3>
+        @Html.Hidden("UserId", Model.UserId)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
         </div>
 
-        @*<div class="edit_p_3">
+        <label>Change team to assign to</label>
 
-        </div>*@
+        @Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"),
+            "Select team", new { @class = "form-control" })
 
+        @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
+        <br />
+
+
+        @Html.Hidden("LastUpdate", Model.LastUpdate)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
     </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
 <style>
-    .dashboard-content {
-        width: 90%;
-        height: 100%;
-        background-color: #f1f1f1;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
+    html, body {
+        overflow-x: hidden;
     }
 
-    .edit_p_1{
-        background-color: gray;
-        height: 150px;
-        width: 90%;
-        margin-left:5%;
-        border-radius: 10px;
+    h1, h2, h3, h4, h5, h6, p {
+        color: white;
     }
 
-    .edit_p_2{
-        background-color: gray;
-        height: 150px;
-        width: 90%;
-        margin-left:5%;
-        /*margin-top:5%;*/
-        border-radius: 10px;
+    .anotheruser {
+        color: white;
     }
 
-    h3{
-        margin-top:3%;
-        margin-left:5%;
-    }
-
-    /*.edit_p_3{
-        background-color: gray;
-    }*/
+        .anotheruser:hover {
+            color: #7792bf;
+        }
 </style>
-
-
-

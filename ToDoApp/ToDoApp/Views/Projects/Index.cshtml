@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div class="dashboard-content">
     <h2 style="text-align:center; display: inline; margin-left: 42%;">Projects</h2>
-    <a href="" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
+    <a href="@Url.Action("Create","Projects")" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
 
     <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none;">
         <tr>
@@ -21,8 +21,8 @@
         {
         <tr>
             <td>@project.Title</td>
-            <td>@project.UserId</td>
-            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Edit", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Projects", new {id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
+            <td>@project.User.UserName</td>
+            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Details", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Projects", new {id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
         
         </tr>
         }

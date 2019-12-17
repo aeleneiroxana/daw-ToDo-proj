@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ToDoApp.Models.Team>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+
+            <td>
+                @if (ViewBag.HasRights)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TeamId })
+                    @Html.Display("         ")
+                    @Html.ActionLink("Add task", "AddTask")
+                    @Html.Display(" | ")
+                    @Html.ActionLink("Add member", "AddMember", new { teamId = item.TeamId })
+                    @Html.Display(" | ")
+                }
+                @Html.ActionLink("Details", "Details", new { id = item.TeamId })
+                @if (ViewBag.HasRights)
+                {
+                    @Html.Display(" | ")
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TeamId })}
+            </td>
+        </tr>
+    }
+
+</table>
+<style>
+    h2, th, td {
+        color: white
+    }
+</style>

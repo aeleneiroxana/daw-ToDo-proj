@@ -9,7 +9,6 @@ namespace ToDoApp.Models.Enums
     {
         NotStarted,
         InProgress,
-        Finished,
-        Suspended
+        Completed
     }
 }
