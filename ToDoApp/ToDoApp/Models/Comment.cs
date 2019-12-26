@@ -32,10 +32,4 @@ namespace ToDoApp.Models
         public virtual ApplicationUser User { get; set; }
     }
 
-    public class CommentDBContext : DbContext
-    {
-        public CommentDBContext() : base("DBConnectionString") { }
-
-        public DbSet<Comment> Comments { get; set; }
-    }
 }

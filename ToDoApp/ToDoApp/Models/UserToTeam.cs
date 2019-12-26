@@ -18,13 +18,6 @@ namespace ToDoApp.Models
 
         public virtual Team Team { get; set; }
         public virtual ApplicationUser User { get; set; }
-
-      
     }
-    public class UsersToTeamsDBContext : DbContext
-    {
-        public UsersToTeamsDBContext() : base("DBConnectionString") { }
 
-        public DbSet<UserToTeam> UsersToTeams { get; set; }
-    }
 }

@@ -20,11 +20,4 @@ namespace ToDoApp.Models
         public virtual ApplicationUser User { get; set; }
     }
 
-    public class UsersToProjectsDBContext : DbContext
-    {
-        public UsersToProjectsDBContext() : base("DBConnectionString") { }
-
-        public DbSet<UserToProject> UsersToProjects { get; set; }
-    }
-
 }

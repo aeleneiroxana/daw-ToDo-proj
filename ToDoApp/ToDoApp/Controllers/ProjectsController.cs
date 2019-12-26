@@ -24,11 +24,7 @@ namespace ToDoApp.Controllers
             }
             else
             {
-                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser user = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-                if (User.IsInRole("Manager") || UserManager.GetRoles(user.Id).Contains("Manager"))
+                if (User.IsInRole("Manager"))
                 {
                     ViewBag.HasRights = true;
                 }
@@ -67,7 +63,6 @@ namespace ToDoApp.Controllers
         public ActionResult Create()
         {
             Project project = new Project();
-            project.UserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
@@ -112,7 +107,7 @@ namespace ToDoApp.Controllers
             }
             else
             {
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.UserId == User.Identity.GetUserId());
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.Team.UserId == User.Identity.GetUserId());
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)));
             }
@@ -128,7 +123,7 @@ namespace ToDoApp.Controllers
         {
             Project item = db.Projects.Find(id);
 
-            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
+            if (User.IsInRole("Administrator") || item.Team.UserId == User.Identity.GetUserId())
             {
                 if (ModelState.IsValid)
                 {
@@ -150,7 +145,7 @@ namespace ToDoApp.Controllers
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
-            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
+            if (User.IsInRole("Administrator") || item.Team.UserId == User.Identity.GetUserId())
             {
                 db.Projects.Remove(item);
                 db.SaveChanges();

@@ -24,11 +24,7 @@ namespace ToDoApp.Controllers
             }
             else
             {
-                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser user = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-                if (User.IsInRole("Manager") || UserManager.GetRoles(user.Id).Contains("Manager"))
+                if (User.IsInRole("Manager"))
                 {
                     ViewBag.HasRights = true;
                 }
