@@ -25,9 +25,9 @@ namespace ToDoApp.Controllers
             else
             {
                 if (User.IsInRole("Manager"))
-                {
                     ViewBag.HasRights = true;
-                }
+                else
+                    ViewBag.HasRights = false;
                 List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
                 ViewBag.Projects = db.Projects.ToList().FindAll(x => userProjects.Exists(y => y.ProjectId == x.ProjectId));
             }
@@ -141,7 +141,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);

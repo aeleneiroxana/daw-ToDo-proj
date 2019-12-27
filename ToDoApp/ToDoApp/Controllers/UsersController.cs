@@ -25,39 +25,33 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Details(int id)
         {
-        }
-
-        [Authorize(Roles = "Administrator")]
-        public ActionResult Create()
-        {
-        }
-
-        [Authorize(Roles = "Administrator")]
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
+            return View();
         }
 
         [Authorize(Roles = "Administrator")]
         public ActionResult Edit(int id)
         {
+            return View();
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
+            return View();
         }
 
         [Authorize(Roles = "Administrator")]
         public ActionResult Delete(int id)
         {
+            return View();
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
+            return View();
         }
     }
 }

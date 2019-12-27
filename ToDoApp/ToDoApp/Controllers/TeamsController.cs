@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
@@ -25,9 +26,9 @@ namespace ToDoApp.Controllers
             else
             {
                 if (User.IsInRole("Manager"))
-                {
                     ViewBag.HasRights = true;
-                }
+                else
+                    ViewBag.HasRights = false;
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
                 ViewBag.Teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
             }
@@ -37,19 +38,33 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
+            Team item = db.Teams.FirstOrDefault(x => x.TeamId == id);
+            if (item == null)
+                return RedirectToAction("Index");
+
+            ViewBag.TeamId = item.TeamId;
+
+            List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.TeamId == item.TeamId && x.UserId != item.UserId);
             if (User.IsInRole("Administrator"))
             {
-                Team item = db.Teams.FirstOrDefault(x => x.TeamId == id);
-                if (item != null)
-                    return View(item);
-                else
-                    return RedirectToAction("Index");
+                ViewBag.HasRights = true;
+                ViewBag.TeamMembers = (List<ApplicationUser>)db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id));
+                if (ViewBag.TeamMembers == null)
+                    ViewBag.TeamMembers = new List<ApplicationUser>();
+                return View(item);
             }
 
-            List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId.ToString() == User.Identity.GetUserId());
+            if (item.UserId == User.Identity.GetUserId())
+                ViewBag.HasRights = true;
+            else
+                ViewBag.HasRights = false;
+
             if (userTeams.Exists(x => x.TeamId == id))
             {
-                Team item = db.Teams.FirstOrDefault(x => x.TeamId == id);
+                userTeams = db.UsersToTeams.ToList().FindAll(x => x.TeamId == item.TeamId && x.UserId != item.UserId);
+                ViewBag.TeamMembers = (List<ApplicationUser>)db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id));
+                if (ViewBag.TeamMembers == null)
+                    ViewBag.TeamMembers = new List<ApplicationUser>();
                 return View(item);
             }
             else
@@ -125,7 +140,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Team item = db.Teams.Find(id);
@@ -140,6 +154,14 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult AddMember(int teamId)
         {
+            Team team;
+            if (User.IsInRole("Administrator"))
+                team = db.Teams.FirstOrDefault(x => x.TeamId == teamId);
+            else
+                team = db.Teams.FirstOrDefault(x => x.TeamId == teamId && x.UserId == User.Identity.GetUserId());
+            if (team == null)
+                return RedirectToAction("Index");
+
             UserToTeam item = new UserToTeam();
             item.TeamId = teamId;
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == teamId);
@@ -153,6 +175,14 @@ namespace ToDoApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                Team team;
+                if (User.IsInRole("Administrator"))
+                    team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId);
+                else
+                    team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId && x.UserId == User.Identity.GetUserId());
+                if (team == null)
+                    return RedirectToAction("Index");
+
                 if (TryUpdateModel(item))
                 {
                     db.UsersToTeams.Add(item);
@@ -165,6 +195,23 @@ namespace ToDoApp.Controllers
 
         }
 
+
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult RemoveMember(int teamId, string memberId)
+        {
+            Team team;
+            if (User.IsInRole("Administrator"))
+                team = db.Teams.FirstOrDefault(x => x.TeamId == teamId);
+            else
+                team = db.Teams.FirstOrDefault(x => x.TeamId == teamId && x.UserId == User.Identity.GetUserId());
+            if (team == null)
+                return RedirectToAction("Index");
+
+            UserToTeam item = db.UsersToTeams.Find(teamId, memberId);
+            db.UsersToTeams.Remove(item);
+            db.SaveChanges();
+            return RedirectToAction("Details", new { id = teamId });
+        }
         [NonAction]
         public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
         {

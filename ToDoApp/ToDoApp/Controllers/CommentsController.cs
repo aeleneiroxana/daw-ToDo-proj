@@ -8,11 +8,6 @@ namespace ToDoApp.Controllers
 {
     public class CommentsController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public ActionResult Details(int id)
         {
             return View();

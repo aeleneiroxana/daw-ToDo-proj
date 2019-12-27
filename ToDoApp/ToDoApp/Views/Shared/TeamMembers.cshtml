@@ -1,0 +1,47 @@
+﻿@model List<ToDoApp.Models.ApplicationUser>
+
+<h4>Team Members</h4>
+
+<table class="table">
+    <tr>
+        <th>
+            UserName
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            @if (ViewBag.HasRights)
+            {
+                <td>
+                    @Html.ActionLink("Remove member", "RemoveMember", new { teamId = ViewBag.TeamId, memberId=item.Id }) 
+                </td>
+            }
+        </tr>
+    }
+
+</table>
+
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
+
+    dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
+        color: white;
+    }
+
+    .anotheruser {
+        color: white;
+    }
+
+        .anotheruser:hover {
+            color: #7792bf;
+        }
+</style>

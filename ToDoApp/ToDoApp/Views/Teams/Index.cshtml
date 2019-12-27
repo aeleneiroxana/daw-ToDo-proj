@@ -14,14 +14,8 @@
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-
-        <th>
-            @Html.DisplayNameFor(model => model.LastUpdate)
-        </th>
         <th></th>
+
     </tr>
 
     @foreach (var item in Model)
@@ -35,7 +29,6 @@
                 @if (ViewBag.HasRights)
                 {
                     @Html.ActionLink("Edit ", "Edit", new { id = item.TeamId })
-                    @Html.ActionLink("Add task ", "AddTask")
                     @Html.ActionLink("Add member ", "AddMember", new { teamId = item.TeamId })
                 }
                 @Html.ActionLink("Details ", "Details", new { id = item.TeamId })

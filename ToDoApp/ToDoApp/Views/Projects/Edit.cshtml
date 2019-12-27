@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        @Html.Hidden("UserId", Model.UserId)
+        @Html.HiddenFor(model => model.UserId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
@@ -41,7 +41,7 @@
         <br />
 
 
-        @Html.Hidden("LastUpdate", Model.LastUpdate)
+        @Html.HiddenFor(model => model.LastUpdate)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
