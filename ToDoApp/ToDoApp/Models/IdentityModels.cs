@@ -30,7 +30,7 @@ namespace ToDoApp.Models
         public DbSet<Team> Teams { get; set; }
         public DbSet<UserToTeam> UsersToTeams { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<UserToProject> UsersToProjects { get; set; }
+        //public DbSet<UserToProject> UsersToProjects { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Comment> Comments { get; set; }
 

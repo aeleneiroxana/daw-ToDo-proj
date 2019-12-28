@@ -22,8 +22,6 @@
             </div>
         </div>
 
-        @Html.HiddenFor(model => model.UserId)
-
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
             <div class="col-md-10">
@@ -45,7 +43,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
