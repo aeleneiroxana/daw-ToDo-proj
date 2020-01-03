@@ -1,8 +1,8 @@
 4 tipuri de "useri" : neinregistrat, admin, manager echipa, membru echipa
 
-User neinregistrat --> vede numai pagina de prezentare, "Login" si "Create account"
+User neinregistrat --> vede numai pagina de prezentare, "Login" si "Create account" DONE
 
-Orice user --> creeaza proj --> devine manager pt proj respectiv
+Orice user --> creeaza proj --> devine manager pt proj respectiv DONE
 
 Manager --> adauga/sterge task-uri
 Manager --> adauga membri

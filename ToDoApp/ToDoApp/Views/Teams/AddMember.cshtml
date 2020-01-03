@@ -10,7 +10,7 @@
 {
     @Html.AntiForgeryToken()
 
-    @Html.Hidden("TeamId", Model.TeamId)
+    @Html.HiddenFor(model => model.TeamId)
     <div class="form-horizontal">
 
         <label>Select member to add</label>

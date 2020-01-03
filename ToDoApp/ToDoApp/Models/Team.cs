@@ -15,6 +15,7 @@ namespace ToDoApp.Models
         [Required]
         public string Title { get; set; }
 
+        //[Required]
         public string UserId { get; set; }
 
         [Required]
@@ -23,12 +24,5 @@ namespace ToDoApp.Models
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
-    }
-    public class TeamDBContext : DbContext
-    {
-        public TeamDBContext() : base("DBConnectionString") { }
-
-        public DbSet<Team> Teams { get; set; }
-        public DbSet<Project> Projects { get; set; }
     }
 }

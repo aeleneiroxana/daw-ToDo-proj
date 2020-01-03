@@ -194,7 +194,6 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Team.cs" />
-    <Compile Include="Models\UserToProject.cs" />
     <Compile Include="Models\UserToTeam.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -267,7 +266,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
@@ -280,6 +278,9 @@
     <Content Include="Views\Teams\Index.cshtml" />
     <Content Include="Views\Teams\AddMember.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Shared\TeamMembers.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

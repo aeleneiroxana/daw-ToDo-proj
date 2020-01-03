@@ -24,16 +24,15 @@ namespace ToDoApp.Controllers
             }
             else
             {
-                UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                string currentUserId = User.Identity.GetUserId();
-                ApplicationUser user = db.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-                if (User.IsInRole("Manager") || UserManager.GetRoles(user.Id).Contains("Manager"))
-                {
+                if (User.IsInRole("Manager"))
                     ViewBag.HasRights = true;
-                }
-                List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
-                ViewBag.Projects = db.Projects.ToList().FindAll(x => userProjects.Exists(y => y.ProjectId == x.ProjectId));
+                else
+                    ViewBag.HasRights = false;
+                string currentUserId = User.Identity.GetUserId();
+                //List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == currentUserId);
+                List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
+
+                ViewBag.Projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
             }
             return View();
         }
@@ -53,10 +52,15 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Index");
             }
 
-            List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId.ToString() == User.Identity.GetUserId());
-            if (userProjects.Exists(x => x.ProjectId == id))
+            string currentUserId = User.Identity.GetUserId();
+
+            List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
+            List<Project> projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
+
+            //List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId.ToString() == currentUserId);
+            if (projects.Exists(x => x.ProjectId == id))
             {
-                Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
+                Project item = projects.FirstOrDefault(x => x.ProjectId == id);
                 return View(item);
             }
             else
@@ -67,14 +71,14 @@ namespace ToDoApp.Controllers
         public ActionResult Create()
         {
             Project project = new Project();
-            project.UserId = User.Identity.GetUserId();
+            string currentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
             }
             else
             {
-                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
+                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)));
             }
             return View(project);
@@ -89,12 +93,12 @@ namespace ToDoApp.Controllers
             {
                 string currentUserId = User.Identity.GetUserId();
 
-                UserToProject userToProject = new UserToProject() { ProjectId = project.ProjectId, UserId = currentUserId };
+                //UserToProject userToProject = new UserToProject() { ProjectId = project.ProjectId, UserId = currentUserId };
 
                 project.LastUpdate = DateTime.Now;
 
                 db.Projects.Add(project);
-                db.UsersToProjects.Add(userToProject);
+                //db.UsersToProjects.Add(userToProject);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -105,6 +109,7 @@ namespace ToDoApp.Controllers
         public ActionResult Edit(int id)
         {
             Project project;
+            string currentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
             {
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
@@ -112,8 +117,8 @@ namespace ToDoApp.Controllers
             }
             else
             {
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.UserId == User.Identity.GetUserId());
-                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == User.Identity.GetUserId());
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.Team.UserId == currentUserId);
+                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)));
             }
             if (project != null)
@@ -127,8 +132,9 @@ namespace ToDoApp.Controllers
         public ActionResult Edit(int id, Project project)
         {
             Project item = db.Projects.Find(id);
+            string currentUserId = User.Identity.GetUserId();
 
-            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
+            if (User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
             {
                 if (ModelState.IsValid)
                 {
@@ -146,11 +152,12 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
-            if (User.IsInRole("Administrator") || item.UserId == User.Identity.GetUserId())
+            string currentUserId = User.Identity.GetUserId();
+
+            if (User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
             {
                 db.Projects.Remove(item);
                 db.SaveChanges();

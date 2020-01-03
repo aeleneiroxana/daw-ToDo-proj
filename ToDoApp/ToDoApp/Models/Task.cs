@@ -39,11 +39,4 @@ namespace ToDoApp.Models
 
         public virtual ICollection<Comment> Comments { get; set; }
     }
-    public class TaskDBContext : DbContext
-    {
-        public TaskDBContext() : base("DBConnectionString") { }
-
-        public DbSet<Task> Tasks { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-    }
 }

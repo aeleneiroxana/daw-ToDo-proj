@@ -22,9 +22,9 @@
         </div>
     </div>
 
-    @Html.Hidden("UserId", Model.UserId)
+    @Html.HiddenFor(model => model.UserId)
 
-    @Html.Hidden("LastUpdate", Model.LastUpdate)
+    @Html.HiddenFor(model => model.LastUpdate)
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

@@ -1,78 +1,69 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model IEnumerable<ToDoApp.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Index2";
 }
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-<div class="dashboard-content">
+<h2>Index2</h2>
 
-    <h2 style="text-align:center; display: inline; margin-left: 42%;">Users</h2>
-    <a href="" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailConfirmed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PasswordHash)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SecurityStamp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockoutEndDateUtc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LockoutEnabled)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccessFailedCount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th></th>
+    </tr>
 
-    <table style="width:100%; margin-top: 1%; border-bottom:none;">
-        <tr>
-            <th>User</th>
-            <th>Number of teams</th>
-            <th>Number of tasks</th>
-        </tr>
+@foreach (var item in ViewBag.Users) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
 
-        @*@foreach (var user in ViewBag.Users)
-         {
-            <tr>
-                <td>@user.UserName</td>
-            </tr>
-         }*@
-
-        <tr>
-            <td>Alexandru</td>
-            <td>1 team</td>
-            <td>5</td>
-            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
-            <td style="border: none; text-align: center; width: 180px"><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">details</a><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">edit</a><a href="" style="color: black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">delete</a></td>
-            @*<td style="border: none; padding:0; margin:0; text-align: center;"><button style="width:50px; height: 15px; background-color:aqua; border-radius: 5px; box-shadow:none;"></button></td>*@
-        </tr>
-        <tr>
-            <td>Mihail</td>
-            <td>2 teams</td>
-            <td>0</td>
-            <td style="border: none; text-align: center; width: 180px"><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">details</a><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">edit</a><a href="" style="color: black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">delete</a></td>
-            @*<td style="border: none; padding:0; margin:0; text-align: center;"><button style="width:50px; height: 15px; background-color:aqua; border-radius: 5px; box-shadow:none;"></button></td>*@
-        </tr>
-        <tr>
-            <td>Virgil</td>
-            <td>4 teams</td>
-            <td>10</td>
-            <td style="border: none; text-align: center; width: 180px"><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">details</a><a href="" style="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">edit</a><a href="" style="color: black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;">delete</a></td>
-            @*<td style="border: none; padding:0; margin:0; text-align: center;"><button style="width:50px; height: 15px; background-color:aqua; border-radius: 5px; box-shadow:none;"></button></td>*@
-        </tr>
-        <tr>
-            <td>Alexandra</td>
-            <td>3 teams</td>
-            <td>2</td>
-            @*<td style="border: none; padding:0; margin:0; text-align: center;"><button style="width:50px; height: 20px; background-color:aqua; border-radius: 5px;">details</button></td>*@
-            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Edit", "Users", new { area = "" }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
-        </tr>
-    </table>
-</div>
-
-<style>
-    .dashboard-content {
-        width: 90%;
-        height: 100%;
-        background-color: #f1f1f1;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
-    }
-
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-
-    th {
-        text-align: center;
-    }
-
-    td {
-        padding-left: 1%;
-    }
-</style>
+</table>

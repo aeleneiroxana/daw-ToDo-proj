@@ -21,22 +21,20 @@ namespace ToDoApp.Models
             return userIdentity;
         }
 
-        //public virtual ICollection<Project> Projects {get; set;}
+        public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Team> Teams { get; set; }
+        public DbSet<UserToTeam> UsersToTeams { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<UserToProject> UsersToProjects { get; set; }
+        //public DbSet<UserToProject> UsersToProjects { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Team> Teams { get; set; }
 
-        public DbSet<UserToTeam> UsersToTeams { get; set; }
-        public ApplicationDbContext()
-            : base("DBConnectionString", throwIfV1Schema: false)
-        {
-        }
+        public ApplicationDbContext() : base("DBConnectionString", throwIfV1Schema: false) { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

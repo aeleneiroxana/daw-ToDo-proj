@@ -16,12 +16,6 @@ namespace ToDoApp
         {
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
             //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<UsersToTeamsDBContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TeamDBContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CommentDBContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<TaskDBContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<UsersToProjectsDBContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ProjectDBContext>());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
