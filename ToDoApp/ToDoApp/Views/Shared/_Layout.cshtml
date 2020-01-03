@@ -36,8 +36,8 @@
             @*<a class="active" href="#home">Dashboard</a>*@
             <a href="@Url.Action("Index", "Teams")">Teams</a>
             <a href="@Url.Action("Index", "Projects")">Projects</a>
-            <a href="">Users<!--<i class="fa fa-fw fa-home" style="font-size:25px;"></i>--></a>
-            <a href="">Tasks</a>
+            <a href="@Url.Action("Index", "Users")">Users<!--<i class="fa fa-fw fa-home" style="font-size:25px;"></i>--></a>
+            <a href="@Url.Action("Index", "Tasks")">Tasks</a>
         </div>
         <div class="container body-content" style="padding-left:80px;">
             @RenderBody()

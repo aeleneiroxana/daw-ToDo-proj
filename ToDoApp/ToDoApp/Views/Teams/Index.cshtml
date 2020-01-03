@@ -1,106 +1,54 @@
-﻿@*@model IEnumerable<ToDoApp.Models.Team>
-
-    @{
-        ViewBag.Title = "Index";
-    }
-
-    <h2>Index</h2>
-
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-
-            <th>
-                @Html.DisplayNameFor(model => model.LastUpdate)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-
-                <td>
-                    @if (ViewBag.HasRights)
-                    {
-                        @Html.ActionLink("Edit ", "Edit", new { id = item.TeamId })
-                        @Html.ActionLink("Add task ", "AddTask")
-                        @Html.ActionLink("Add member ", "AddMember", new { teamId = item.TeamId })
-                    }
-                    @Html.ActionLink("Details ", "Details", new { id = item.TeamId })
-                    @if (ViewBag.HasRights)
-                    {
-                        @Html.ActionLink("Delete ", "Delete", new { id = item.TeamId })}
-                </td>
-            </tr>
-        }
-
-    </table>
-    <style>
-        h2, th, td {
-            color: white
-        }
-    </style>*@
+﻿@model IEnumerable<ToDoApp.Models.Team>
 
 @{
     ViewBag.Title = "Index";
 }
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<div class="dashboard-content">
-    <h2 style="text-align:center; display: inline; margin-left: 42%;">Teams</h2>
-    <a href="@Url.Action("Create","Teams")" style="float: right; margin-top: 1%;"><i class="material-icons">add</i></a>
 
-    <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none;">
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>Title</th>
-            <th>Manager</th>
-            <th>Last update</th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+
+            <td>
+                @if (ViewBag.HasRights)
+                {
+                    @Html.ActionLink("Edit ", "Edit", new { id = item.TeamId })
+                    @Html.ActionLink("Add task ", "AddTask")
+                    @Html.ActionLink("Add member ", "AddMember", new { teamId = item.TeamId })
+                }
+                @Html.ActionLink("Details ", "Details", new { id = item.TeamId })
+                @if (ViewBag.HasRights)
+                {
+                    @Html.ActionLink("Delete ", "Delete", new { id = item.TeamId })}
+            </td>
         </tr>
+    }
 
-        @foreach (var team in ViewBag.Teams)
-        {
-        <tr>
-            <td>@team.Title</td>
-            <td>@team.User.UserName</td>
-            <td>@team.LastUpdate</td>
-            <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Details", "Teams", new { id = team.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("edit", "Edit", "Teams", new { id = team.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })@Html.ActionLink("delete", "Delete", "Teams", new { id = team.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
-
-        </tr>
-        }
-    </table>
-
-</div>
-
+</table>
 <style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-
-    th {
-        text-align: center;
-    }
-
-    td {
-        padding-left: 1%;
-    }
-
-    .dashboard-content {
-        width: 90%;
-        height: 100%;
-        background-color: #f1f1f1;
-        border-bottom-left-radius: 12px;
-        border-bottom-right-radius: 12px;
+    h2, th, td {
+        color: white
     }
 </style>
