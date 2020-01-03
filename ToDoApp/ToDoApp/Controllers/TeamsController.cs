@@ -128,6 +128,20 @@ namespace ToDoApp.Controllers
             return RedirectToAction("Index");
         }
 
+        //[Authorize(Roles = "Administrator,Manager")]
+        //public ActionResult Delete(int id)
+        //{
+        //    Team team;
+        //    if (User.IsInRole("Administrator"))
+        //        team = db.Teams.FirstOrDefault(x => x.TeamId == id);
+        //    else
+        //        team = db.Teams.FirstOrDefault(x => x.TeamId == id && x.UserId == User.Identity.GetUserId());
+        //    if (team != null)
+        //        return View(team);
+
+        //    return RedirectToAction("Index");
+        //}
+
         [Authorize(Roles = "Administrator,Manager")]
         [HttpDelete]
         public ActionResult Delete(int id)

@@ -6,11 +6,11 @@
 
     <h2>Details</h2>
 
-    <div>
-        <h4>Project</h4>
+    <div style="padding: 0; margin:0;">
+        <h4>Project @Model.Title</h4>
         <hr />
-        <dl class="dl-horizontal">
-            <dt>
+        <dl class="dl-horizontal" style="padding:0; margin: 0; text-align:left;">
+            <dt style="text-align:left; margin-bottom:10px;">
                 @Html.DisplayNameFor(model => model.Title)
             </dt>
 
@@ -18,7 +18,7 @@
                 @Html.DisplayFor(model => model.Title)
             </dd>
 
-            <dt>
+            <dt style="text-align:left; margin-bottom:10px;">
                 @Html.DisplayNameFor(model => model.Description)
             </dt>
 
@@ -26,7 +26,7 @@
                 @Html.DisplayFor(model => model.Description)
             </dd>
 
-            <dt>
+            <dt style="text-align:left; margin-bottom:10px;">
                 @Html.DisplayNameFor(model => model.User.UserName)
             </dt>
 
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(model => model.User.UserName)
             </dd>
 
-            <dt>
+            <dt style="text-align:left; margin-bottom:10px;">
                 Team Title
             </dt>
 
@@ -43,7 +43,7 @@
             </dd>
 
 
-            <dt>
+            <dt style="text-align:left; margin-bottom:10px; margin-bottom:17px;">
                 @Html.DisplayNameFor(model => model.LastUpdate)
             </dt>
 
@@ -53,7 +53,7 @@
         </dl>
     </div>
     <p>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to projects", "Index", null, new { @class = "backLink" })
     </p>
 
     <style>
@@ -72,4 +72,27 @@
             .anotheruser:hover {
                 color: #7792bf;
             }
+
+        .backLink{
+            background-color: #4CAF50;
+            color: black;
+            font-weight: 600;
+            border-radius: 5px;
+            padding-bottom: 3px;
+            padding-top: 3px;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .backLink:hover{
+            background-color: #4CAF50;
+            color: #474747;
+            text-decoration: none;
+            border-radius: 5px;
+            padding-bottom: 3px;
+            padding-top: 3px;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
     </style>
