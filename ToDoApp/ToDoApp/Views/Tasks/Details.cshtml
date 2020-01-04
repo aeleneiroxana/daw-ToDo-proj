@@ -10,7 +10,7 @@
     <h4>Task</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             Project Title
         </dt>
 
@@ -18,7 +18,7 @@
             @Html.DisplayFor(model => model.Project.Title)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -26,7 +26,7 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
 
@@ -34,7 +34,7 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
 
@@ -42,7 +42,7 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             Assigned User
         </dt>
 
@@ -63,7 +63,7 @@
             }
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
 
@@ -71,7 +71,7 @@
             @Html.DisplayFor(model => model.StartDate)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
 
@@ -81,9 +81,9 @@
 
     </dl>
 </div>
-<p>
+@*<p>
     @Html.ActionLink("Back to Project", "Details", "Projects", routeValues: new { id = Model.ProjectId }, htmlAttributes: null)
-</p>
+</p>*@
 
 <br />
 <div>
