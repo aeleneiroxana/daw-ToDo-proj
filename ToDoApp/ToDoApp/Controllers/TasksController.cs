@@ -14,101 +14,101 @@ namespace ToDoApp.Controllers
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Tasks
-        [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index()
-        {
-            if(User.IsInRole("Administrator"))
-                ViewBag.Tasks = db.Tasks.ToList();
-            else
-            {
 
-            }
-            return View();
-        }
-
-        // GET: Tasks/Details/5
-        [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Details(int id)
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult Create(int projectId)
         {
+            Project project;
+            string currentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId);
+            else
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId && x.Team.UserId == currentUserId);
+            if (project == null)
+                return RedirectToAction("Index", "Projects");
+
+            Task task = new Task()
             {
-                Task item = db.Tasks.FirstOrDefault(x => x.TaskId == id);
-                if (item != null)
-                    return View(item);
+                ProjectId = projectId
+            };
+
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
+
+            return View(task);
+        }
+
+        [Authorize(Roles = "Administrator,Manager")]
+        [HttpPost]
+        public ActionResult Create(Task item)
+        {
+            if (ModelState.IsValid)
+            {
+                Project project;
+                string currentUserId = User.Identity.GetUserId();
+                if (User.IsInRole("Administrator"))
+                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
                 else
-                    return RedirectToAction("Index");
+                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId && x.Team.UserId == currentUserId);
+                if (project == null)
+                    return RedirectToAction("Index", "Projects");
+
+                if (TryUpdateModel(item))
+                {
+                    item.LastUpdate = DateTime.Now;
+                    item.StartDate = null;
+                    item.EndDate = null;
+                    db.Tasks.Add(item);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
+                }
             }
-            return View();
+
+            return RedirectToAction("Create", new { projectId = item.ProjectId });
+
         }
 
-        // GET: Tasks/Create
-        [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Create()
+        [Authorize(Roles = "Administrator,Manager")]
+        public ActionResult Delete(int taskId)
         {
-            //Task task = new Task();
-            //task.User = User.Identity.GetUserId();
-            return View();
+            string currentUserId = User.Identity.GetUserId();
+
+            Task task;
+            if (User.IsInRole("Administrator"))
+                task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId);
+            else
+                task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId && x.Project.Team.UserId == currentUserId);
+            if (task == null)
+                return RedirectToAction("Index", "Projects");
+
+            int projectId = task.ProjectId;
+            db.Tasks.Remove(task);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Projects", new { id = projectId });
         }
 
-        // POST: Tasks/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [NonAction]
+        public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
         {
-            try
+            List<SelectListItem> selectList = new List<SelectListItem>
             {
-                // TODO: Add insert logic here
+                new SelectListItem { Value = null, Text = "None" }
+            };
 
-                return RedirectToAction("Index");
-            }
-            catch
+            List<SelectListItem> partialSelectList = new List<SelectListItem>();
+
+            foreach (var user in users)
             {
-                return View();
+                partialSelectList.Add(new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = user.UserName.ToString()
+                });
             }
-        }
 
-        // GET: Tasks/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            selectList = selectList.Concat(partialSelectList.OrderBy(x => x.Text)).ToList();
 
-        // POST: Tasks/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Tasks/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Tasks/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return selectList;
         }
     }
 }

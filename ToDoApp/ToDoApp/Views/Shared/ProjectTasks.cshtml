@@ -69,7 +69,7 @@
             @if (ViewBag.HasRights)
             {
                 <td>
-                    @Html.ActionLink("Remove task", "RemoveTask", new { taskId = item.TaskId })
+                    @Html.ActionLink("Remove task", "Delete", "Tasks", new { taskId = item.TaskId }, htmlAttributes: null)
                 </td>
             }
 
