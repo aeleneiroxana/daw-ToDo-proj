@@ -281,6 +281,8 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Shared\TeamMembers.cshtml" />
     <Content Include="Views\Shared\ProjectTasks.cshtml" />
+    <Content Include="Views\Tasks\Edit.cshtml" />
+    <Content Include="Views\Tasks\Details.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

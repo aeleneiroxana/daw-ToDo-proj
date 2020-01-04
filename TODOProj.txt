@@ -4,22 +4,22 @@ User neinregistrat --> vede numai pagina de prezentare, "Login" si "Create accou
 
 Orice user --> creeaza proj --> devine manager pt proj respectiv DONE
 
-Manager --> adauga/sterge task-uri
+Manager --> adauga/sterge task-uri DONE
 Manager --> adauga membri DONE
-Manager --> asigneaza taskuri membrilor
-Manager --> poate modifica statusul oricarui task
+Manager --> asigneaza taskuri membrilor DONE
+Manager --> poate modifica statusul oricarui task DONE
 
 Membru --> adauga/editeaza/sterge comentarii proprii la task-uri
-Membru --> poate vizualiza numai task-urile proiectelor din care face parte
-Membru --> poate modifica statusul unui task primit
+Membru --> poate vizualiza numai task-urile proiectelor din care face parte DONE
+Membru --> poate modifica statusul unui task primit DONE
 
-Status task: not started, in progress, completed
+Status task: not started, in progress, completed DONE
 
-Echipa --> pagina cu task-uri
+Echipa --> pagina cu task-uri DONE
 
 Structura task: Titlu, Descriere, Status, Comm, StartDate, EndDate DONE
 
-Admin --> sterge task-uri
+Admin --> sterge task-uri DONE
 Admin --> sterge comentarii
 Admin --> sterge echipe DONE
 Admin --> activeaza/revoca drepturile utilizatorilor

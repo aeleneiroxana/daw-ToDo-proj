@@ -40,7 +40,7 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
-
+            ViewBag.CurrentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;

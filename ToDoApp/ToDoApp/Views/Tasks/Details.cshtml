@@ -1,0 +1,88 @@
+﻿@model ToDoApp.Models.Task
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Task</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Project Title
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Project.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            Assigned User
+        </dt>
+
+        <dd>
+            @{
+                var db = new ToDoApp.Models.ApplicationDbContext();
+
+                string name = "None";
+                if (Model.AssignedUserId != null)
+                {
+                    var user = db.Users.FirstOrDefault(x => x.Id == Model.AssignedUserId);
+                    if (user != null)
+                    {
+                        name = user.UserName;
+                    }
+                }
+                @Html.DisplayFor(model => name)
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        @Html.HiddenFor(model => model.LastUpdate)
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to Project", "Details", "Projects", routeValues: new { id = Model.ProjectId })
+</p>

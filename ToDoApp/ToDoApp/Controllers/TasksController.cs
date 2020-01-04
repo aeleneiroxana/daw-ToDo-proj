@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp.Controllers
 {
@@ -56,8 +57,11 @@ namespace ToDoApp.Controllers
                 if (TryUpdateModel(item))
                 {
                     item.LastUpdate = DateTime.Now;
-                    item.StartDate = null;
-                    item.EndDate = null;
+                    if (item.Status == TaskStatus.InProgress && item.StartDate == null)
+                        item.StartDate = DateTime.Now;
+                    if (item.Status == TaskStatus.Completed && item.EndDate == null)
+                        item.EndDate = DateTime.Now;
+
                     db.Tasks.Add(item);
                     db.SaveChanges();
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
@@ -67,6 +71,84 @@ namespace ToDoApp.Controllers
             return RedirectToAction("Create", new { projectId = item.ProjectId });
 
         }
+
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Edit(int id)
+        {
+            Task task = db.Tasks.FirstOrDefault(x => x.TaskId == id);
+            if (task == null)
+                return RedirectToAction("Index", "Projects");
+
+            Project project = db.Projects.FirstOrDefault(x => x.ProjectId == task.ProjectId);
+            if (project == null)
+                return RedirectToAction("Index", "Projects");
+
+            string currentUserId = User.Identity.GetUserId();
+            if (User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
+                ViewBag.HasRights = true;
+            else
+            {
+                if (task.AssignedUserId == currentUserId)
+                    ViewBag.HasRights = false;
+                else
+                    return RedirectToAction("Index", "Projects");
+            }
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
+
+            if (task != null)
+                return View(task);
+
+            return RedirectToAction("Index", "Projects");
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Edit(int id, Task task)
+        {
+
+            Task item = db.Tasks.Find(id);
+            string currentUserId = User.Identity.GetUserId();
+
+            Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
+
+            if (item == null || project == null)
+                return RedirectToAction("Index", "Projects");
+
+            if (!(User.IsInRole("Administrator") || project.Team.UserId == currentUserId || item.AssignedUserId == currentUserId))
+                return RedirectToAction("Index", "Projects");
+
+            if (ModelState.IsValid)
+            {
+                if (item.Status == TaskStatus.NotStarted)
+                {
+                    if (task.Status == TaskStatus.InProgress && task.StartDate == null)
+                        task.StartDate = DateTime.Now;
+                }
+
+                if(item.Status != TaskStatus.Completed)
+                {
+                    if (task.Status == TaskStatus.Completed && task.EndDate == null)
+                        task.EndDate = DateTime.Now;
+                }
+
+                if (TryUpdateModel(item))
+                {
+                    item.AssignedUserId = task.AssignedUserId;
+                    item.Description = task.Description;
+                    item.EndDate = task.EndDate;
+                    item.LastUpdate = DateTime.Now;
+                    item.StartDate = task.StartDate;
+                    item.Status = task.Status;
+                    item.Title = task.Title;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
+                }
+            }
+            return RedirectToAction("Edit", new { id });
+
+        }
+
 
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Delete(int taskId)
