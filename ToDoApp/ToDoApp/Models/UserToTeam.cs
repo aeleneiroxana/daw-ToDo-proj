@@ -11,9 +11,11 @@ namespace ToDoApp.Models
     public class UserToTeam
     {
         [Key, Column(Order = 0)]
+        [Required]
         public int TeamId { get; set; }
 
         [Key, Column(Order = 1)]
+        [Required]
         public string UserId { get; set; }
 
         public virtual Team Team { get; set; }

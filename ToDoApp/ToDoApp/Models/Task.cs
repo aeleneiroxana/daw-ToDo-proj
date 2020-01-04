@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using ToDoApp.Models.Enums;
 
@@ -24,11 +25,11 @@ namespace ToDoApp.Models
         [Required]
         public int ProjectId { get; set; }
 
-        public int? AssignedUserId { get; set; }
+        public string AssignedUserId { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         [Required]
         public DateTime LastUpdate { get; set; }

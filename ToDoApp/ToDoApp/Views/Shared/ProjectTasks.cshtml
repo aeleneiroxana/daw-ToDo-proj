@@ -1,0 +1,97 @@
+﻿@model IEnumerable<ToDoApp.Models.Task>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Project Title
+        </th>
+        <th>
+            Task Title
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            AssignedUser
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @{
+                    var db = new ToDoApp.Models.ApplicationDbContext();
+
+                    string name = "None";
+                    if (item.AssignedUserId != null)
+                    {
+                        var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
+                        if (user != null)
+                        {
+                            name = user.UserName;
+                        }
+                    }
+                    @Html.DisplayFor(modelItem => name)
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            @Html.HiddenFor(modelItem => item.LastUpdate)
+            @if (ViewBag.HasRights)
+            {
+                <td>
+                    @Html.ActionLink("Remove task", "RemoveTask", new { taskId = item.TaskId })
+                </td>
+            }
+
+        </tr>
+    }
+
+</table>
+
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
+
+    dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
+        color: white;
+    }
+
+    .anotheruser {
+        color: white;
+    }
+
+        .anotheruser:hover {
+            color: #7792bf;
+        }
+</style>

@@ -194,7 +194,7 @@ namespace ToDoApp.Controllers
                 }
             }
 
-            return View(item);
+            return RedirectToAction("AddMember", new { teamId = item.TeamId});
 
         }
 
@@ -217,10 +217,11 @@ namespace ToDoApp.Controllers
             db.SaveChanges();
             return RedirectToAction("Details", new { id = teamId });
         }
+
         [NonAction]
         public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
         {
-            var selectList = new List<SelectListItem>();
+            List<SelectListItem> selectList = new List<SelectListItem>();
 
             foreach (var user in users)
             {
@@ -230,6 +231,9 @@ namespace ToDoApp.Controllers
                     Text = user.UserName.ToString()
                 });
             }
+
+            selectList = selectList.OrderBy(x => x.Text).ToList();
+
             return selectList;
         }
 

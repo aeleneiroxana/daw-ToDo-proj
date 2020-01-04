@@ -267,11 +267,10 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Create.cshtml" />
     <Content Include="Views\Projects\Details.cshtml" />
-    <Content Include="Views\Tasks\Create.cshtml" />
+    <Content Include="Views\Projects\AddTask.cshtml" />
     <Content Include="Views\Teams\Create.cshtml" />
     <Content Include="Views\Teams\Details.cshtml" />
     <Content Include="Views\Teams\Edit.cshtml" />
@@ -281,6 +280,7 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Shared\TeamMembers.cshtml" />
+    <Content Include="Views\Shared\ProjectTasks.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

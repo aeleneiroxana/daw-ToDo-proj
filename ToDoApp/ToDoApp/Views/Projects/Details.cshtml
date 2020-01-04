@@ -1,75 +1,92 @@
 ﻿@model ToDoApp.Models.Project
 
-    @{
-        ViewBag.Title = "Details";
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Team.User.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Team.User.UserName)
+        </dd>
+
+        <dt>
+            Team Title
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Team.Title)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdate)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (ViewBag.HasRights)
+    {
+        @Html.ActionLink("Edit ", "Edit", new { id = Model.ProjectId })
+
+        @Html.ActionLink("Add task ", "AddTask", new { projectId = Model.ProjectId })
+
+        @Html.ActionLink("Delete ", "Delete", new { id = Model.ProjectId })
+    }
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<br />
+<br />
+<br />
+<div>
+    @Html.Partial("ProjectTasks", (List<ToDoApp.Models.Task>)ViewBag.ProjectTasks)
+</div>
+
+<style>
+    html, body {
+        overflow-x: hidden;
     }
 
-    <h2>Details</h2>
+    dd, dt, h1, h2, h3, h4, h5, h6, p {
+        color: white;
+    }
 
-    <div>
-        <h4>Project</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Title)
-            </dt>
+    .anotheruser {
+        color: white;
+    }
 
-            <dd>
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Team.User.UserName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Team.User.UserName)
-            </dd>
-
-            <dt>
-                Team Title
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Team.Title)
-            </dd>
-
-
-            <dt>
-                @Html.DisplayNameFor(model => model.LastUpdate)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.LastUpdate)
-            </dd>
-        </dl>
-    </div>
-    <p>
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-
-    <style>
-        html, body {
-            overflow-x: hidden;
+        .anotheruser:hover {
+            color: #7792bf;
         }
-
-        dd, dt, h1, h2, h3, h4, h5, h6, p {
-            color: white;
-        }
-
-        .anotheruser {
-            color: white;
-        }
-
-            .anotheruser:hover {
-                color: #7792bf;
-            }
-    </style>
+</style>

@@ -40,6 +40,9 @@
         @Html.ActionLink("Delete ", "Delete", new { id = Model.TeamId })
     }
 </div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
 
 
 <br />
@@ -49,9 +52,6 @@
     @Html.Partial("TeamMembers", (List<ToDoApp.Models.ApplicationUser>)ViewBag.TeamMembers)
 </div>
 
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
 <style>
     html, body {
