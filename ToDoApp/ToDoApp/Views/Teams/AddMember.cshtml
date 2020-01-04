@@ -4,7 +4,7 @@
     ViewBag.Title = "AddMember";
 }
 
-<h2>Add Member</h2>
+<h2 style="color:white">Add Member</h2>
 
 @using (Html.BeginForm())
 {
@@ -13,7 +13,7 @@
     @Html.HiddenFor(model => model.TeamId)
     <div class="form-horizontal">
 
-        <label>Select member to add</label>
+        <label style="color:white">Select member to add</label>
 
         @Html.DropDownListFor(m => m.UserId, new SelectList(ViewBag.Members, "Value", "Text"),
             "Select member", new { @class = "form-control" })
@@ -22,8 +22,8 @@
         <br />
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class="col-md-offset-2 col-md-10" style="text-align:left; padding:0; margin-left: 15px;">
+                <input type="submit" value="Save" class="btn btn-default" style=" background-color: #4CAF50; border:none; color:black"/>
             </div>
         </div>
     </div>

@@ -9,8 +9,8 @@
 
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
+    <dl class="dl-horizontal" style="padding:0; margin: 0; text-align:left;">
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -18,7 +18,7 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             Manager UserName
         </dt>
 
@@ -33,16 +33,18 @@
 <div>
     @if (ViewBag.HasRights)
     {
-        @Html.ActionLink("Edit ", "Edit", new { id = Model.TeamId })
-
-        @Html.ActionLink("Add member ", "AddMember", new { teamId = Model.TeamId })
-
-        @Html.ActionLink("Delete ", "Delete", new { id = Model.TeamId })
+        @*@Html.ActionLink("Edit ", "Edit", new { id = Model.TeamId })*@
+        @Html.ActionLink("Edit", "Edit", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        @*<br>*@
+        @*@Html.ActionLink("Delete ", "Delete", new { id = Model.TeamId })*@
+        @Html.ActionLink("Delete", "Delete", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        <br/>
+        @Html.ActionLink("Add member ", "AddMember", new { teamId = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
     }
 </div>
-<p>
+@*<p>
     @Html.ActionLink("Back to List", "Index")
-</p>
+</p>*@
 
 
 <br />
