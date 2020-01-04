@@ -15,6 +15,42 @@ namespace ToDoApp.Controllers
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Details(int id)
+        {
+            Task item = db.Tasks.FirstOrDefault(x => x.TaskId == id);
+
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.HasRights = true;
+                if (item != null)
+                {
+                    ViewBag.TaskComments = item.Comments.ToList();
+                    return View(item);
+                }
+                else
+                    return RedirectToAction("Index", "Projects");
+            }
+            else
+                ViewBag.HasRights = false;
+
+            if(item == null)
+                return RedirectToAction("Index", "Projects");
+
+            string currentUserId = User.Identity.GetUserId();
+            Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
+            if (project == null)
+                return RedirectToAction("Index", "Projects");
+
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
+
+            if(!members.Exists(x => x.Value == currentUserId))
+                return RedirectToAction("Index", "Projects");
+
+            ViewBag.TaskComments = item.Comments.ToList();
+            return View(item);
+        }
 
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Create(int projectId)
@@ -126,7 +162,7 @@ namespace ToDoApp.Controllers
                         task.StartDate = DateTime.Now;
                 }
 
-                if(item.Status != TaskStatus.Completed)
+                if (item.Status != TaskStatus.Completed)
                 {
                     if (task.Status == TaskStatus.Completed && task.EndDate == null)
                         task.EndDate = DateTime.Now;
