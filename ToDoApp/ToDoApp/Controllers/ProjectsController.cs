@@ -40,7 +40,7 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
-
+            ViewBag.CurrentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
@@ -56,7 +56,7 @@ namespace ToDoApp.Controllers
 
             string currentUserId = User.Identity.GetUserId();
 
-           
+
             List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
             List<Project> projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
 
@@ -89,7 +89,7 @@ namespace ToDoApp.Controllers
             else
             {
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
-                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)));
+                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId) && x.UserId == currentUserId));
             }
             return View(project);
         }
@@ -103,16 +103,13 @@ namespace ToDoApp.Controllers
             {
                 string currentUserId = User.Identity.GetUserId();
 
-                //UserToProject userToProject = new UserToProject() { ProjectId = project.ProjectId, UserId = currentUserId };
-
                 project.LastUpdate = DateTime.Now;
 
                 db.Projects.Add(project);
-                //db.UsersToProjects.Add(userToProject);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            return RedirectToAction("Create");
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -175,78 +172,6 @@ namespace ToDoApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult AddTask(int projectId)
-        {
-            Project project;
-            string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId);
-            else
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId && x.Team.UserId == currentUserId);
-            if (project == null)
-                return RedirectToAction("Index");
-
-            Task task = new Task()
-            {
-                ProjectId = projectId
-            };
-
-            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
-            ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
-
-            return View(task);
-        }
-
-        [Authorize(Roles = "Administrator,Manager")]
-        [HttpPost]
-        public ActionResult AddTask(Task item)
-        {
-            if (ModelState.IsValid)
-            {
-                Project project;
-                string currentUserId = User.Identity.GetUserId();
-                if (User.IsInRole("Administrator"))
-                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
-                else
-                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId && x.Team.UserId == currentUserId);
-                if (project == null)
-                    return RedirectToAction("Index");
-
-                if (TryUpdateModel(item))
-                {
-                    item.LastUpdate = DateTime.Now;
-                    item.StartDate = null;
-                    item.EndDate = null;
-                    db.Tasks.Add(item);
-                    db.SaveChanges();
-                    return RedirectToAction("Details", new { id = item.ProjectId });
-                }
-            }
-
-            return RedirectToAction("AddTask", new { projectId = item.ProjectId });
-
-        }
-
-        [Authorize(Roles = "Administrator,Manager")]
-        public ActionResult RemoveTask(int taskId)
-        {
-            string currentUserId = User.Identity.GetUserId();
-
-            Task task;
-            if (User.IsInRole("Administrator"))
-                task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId);
-            else
-                task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId && x.Project.Team.UserId == currentUserId);
-            if (task == null)
-                return RedirectToAction("Index");
-
-            int projectId = task.ProjectId;
-            db.Tasks.Remove(task);
-            db.SaveChanges();
-            return RedirectToAction("Details", new { id = projectId });
-        }
-
         [NonAction]
         public IEnumerable<SelectListItem> TeamsToSelectList(List<Team> teams)
         {
@@ -265,28 +190,5 @@ namespace ToDoApp.Controllers
             return selectList;
         }
 
-        [NonAction]
-        public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
-        {
-            List<SelectListItem> selectList = new List<SelectListItem>
-            {
-                new SelectListItem { Value = null, Text = "None" }
-            };
-
-            List<SelectListItem> partialSelectList = new List<SelectListItem>();
-
-            foreach (var user in users)
-            {
-                partialSelectList.Add(new SelectListItem
-                {
-                    Value = user.Id.ToString(),
-                    Text = user.UserName.ToString()
-                });
-            }
-
-            selectList = selectList.Concat(partialSelectList.OrderBy(x => x.Text)).ToList();
-
-            return selectList;
-        }
     }
 }

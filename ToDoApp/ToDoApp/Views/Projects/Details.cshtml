@@ -57,7 +57,7 @@
     {
         @Html.ActionLink("Edit ", "Edit", new { id = Model.ProjectId })
 
-        @Html.ActionLink("Add task ", "AddTask", new { projectId = Model.ProjectId })
+        @Html.ActionLink("Add task ", "Create", "Tasks", routeValues: new { projectId = Model.ProjectId }, htmlAttributes:null)
 
         @Html.ActionLink("Delete ", "Delete", new { id = Model.ProjectId })
     }

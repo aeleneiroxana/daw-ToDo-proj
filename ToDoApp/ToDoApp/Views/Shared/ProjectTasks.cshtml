@@ -30,50 +30,61 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @{
-                    var db = new ToDoApp.Models.ApplicationDbContext();
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Project.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Description)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Status)
+    </td>
+    <td>
+        @{
+            var db = new ToDoApp.Models.ApplicationDbContext();
 
-                    string name = "None";
-                    if (item.AssignedUserId != null)
-                    {
-                        var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
-                        if (user != null)
-                        {
-                            name = user.UserName;
-                        }
-                    }
-                    @Html.DisplayFor(modelItem => name)
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            @Html.HiddenFor(modelItem => item.LastUpdate)
-            @if (ViewBag.HasRights)
+            string name = "None";
+            if (item.AssignedUserId != null)
             {
-                <td>
-                    @Html.ActionLink("Remove task", "RemoveTask", new { taskId = item.TaskId })
-                </td>
+                var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
+                if (user != null)
+                {
+                    name = user.UserName;
+                }
             }
+            @Html.DisplayFor(modelItem => name)
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StartDate)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.EndDate)
+    </td>
+    @Html.HiddenFor(modelItem => item.LastUpdate)
+    @if (ViewBag.HasRights)
+    {
+        <td>
+            @Html.ActionLink("Details ", "Details", "Tasks", new { id = item.TaskId }, htmlAttributes: null)
+            @Html.ActionLink("Edit ", "Edit", "Tasks", new { id = item.TaskId }, htmlAttributes: null)
+            @Html.ActionLink("Remove ", "Delete", "Tasks", new { taskId = item.TaskId }, htmlAttributes: null)
+        </td>
+    }
+    else
+    {
+        if (item.AssignedUserId == ViewBag.CurrentUserId)
+        {
+            <td>
+                @Html.ActionLink("Change Status", "Edit", "Tasks", new { id = item.TaskId }, htmlAttributes: null)
+            </td>
+        }
+    }
 
-        </tr>
+</tr>
     }
 
 </table>
