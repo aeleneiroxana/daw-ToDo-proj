@@ -18,6 +18,8 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
+            string currentUserId = User.Identity.GetUserId();
+            ViewBag.CurrentUserId = currentUserId;
             Task item = db.Tasks.FirstOrDefault(x => x.TaskId == id);
 
             if (User.IsInRole("Administrator"))
@@ -26,6 +28,11 @@ namespace ToDoApp.Controllers
                 if (item != null)
                 {
                     ViewBag.TaskComments = item.Comments.ToList();
+                    ViewBag.NewComment = new Comment()
+                    {
+                        TaskId = item.TaskId,
+                        UserId = currentUserId
+                    };
                     return View(item);
                 }
                 else
@@ -34,10 +41,9 @@ namespace ToDoApp.Controllers
             else
                 ViewBag.HasRights = false;
 
-            if(item == null)
+            if (item == null)
                 return RedirectToAction("Index", "Projects");
 
-            string currentUserId = User.Identity.GetUserId();
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
             if (project == null)
                 return RedirectToAction("Index", "Projects");
@@ -45,8 +51,14 @@ namespace ToDoApp.Controllers
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
             List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
 
-            if(!members.Exists(x => x.Value == currentUserId))
+            if (!members.Exists(x => x.Value == currentUserId))
                 return RedirectToAction("Index", "Projects");
+
+            ViewBag.NewComment = new Comment()
+            {
+                TaskId = item.TaskId,
+                UserId = currentUserId
+            };
 
             ViewBag.TaskComments = item.Comments.ToList();
             return View(item);

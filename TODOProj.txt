@@ -1,4 +1,4 @@
-4 tipuri de "useri" : neinregistrat, admin, manager echipa, membru echipa
+4 tipuri de "useri" : neinregistrat, admin, manager echipa, membru echipa DONE
 
 User neinregistrat --> vede numai pagina de prezentare, "Login" si "Create account" DONE
 
@@ -9,7 +9,7 @@ Manager --> adauga membri DONE
 Manager --> asigneaza taskuri membrilor DONE
 Manager --> poate modifica statusul oricarui task DONE
 
-Membru --> adauga/editeaza/sterge comentarii proprii la task-uri
+Membru --> adauga/editeaza/sterge comentarii proprii la task-uri DONE
 Membru --> poate vizualiza numai task-urile proiectelor din care face parte DONE
 Membru --> poate modifica statusul unui task primit DONE
 
@@ -20,7 +20,7 @@ Echipa --> pagina cu task-uri DONE
 Structura task: Titlu, Descriere, Status, Comm, StartDate, EndDate DONE
 
 Admin --> sterge task-uri DONE
-Admin --> sterge comentarii
+Admin --> sterge comentarii DONE
 Admin --> sterge echipe DONE
 Admin --> activeaza/revoca drepturile utilizatorilor
 

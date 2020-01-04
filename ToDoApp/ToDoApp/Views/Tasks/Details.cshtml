@@ -79,10 +79,36 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
 
-        @Html.HiddenFor(model => model.LastUpdate)
-
     </dl>
 </div>
 <p>
     @Html.ActionLink("Back to Project", "Details", "Projects", routeValues: new { id = Model.ProjectId }, htmlAttributes: null)
 </p>
+
+<br />
+<div>
+    @Html.Partial("TaskComments", (List<ToDoApp.Models.Comment>)ViewBag.TaskComments)
+</div>
+
+<br />
+<div>
+    @Html.Partial("AddComment", (ToDoApp.Models.Comment)ViewBag.NewComment)
+</div>
+
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
+
+    dd, dt, h1, h2, h3, h4, h5, h6, p {
+        color: white;
+    }
+
+    .anotheruser {
+        color: white;
+    }
+
+        .anotheruser:hover {
+            color: #7792bf;
+        }
+</style>

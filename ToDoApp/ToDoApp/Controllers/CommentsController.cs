@@ -1,76 +1,98 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
 {
     public class CommentsController : Controller
     {
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Create()
-        {
-            return View();
-        }
-
+        [Authorize(Roles = "Administrator,Manager,User")]
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Comment comment)
         {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                comment.LastUpdate = DateTime.Now;
+                comment.DateAdded = DateTime.Now;
+
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Tasks", new { id = comment.TaskId });
             }
+            return RedirectToAction("Details", "Tasks", new { id = comment.TaskId });
         }
 
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Edit(int id)
         {
-            return View();
+            Comment comment = db.Comments.FirstOrDefault(x => x.CommentId == id);
+            if (comment == null)
+                return RedirectToAction("Index", "Projects");
+
+
+            string currentUserId = User.Identity.GetUserId();
+            if (User.IsInRole("Administrator") || comment.UserId == currentUserId)
+                return View(comment);
+
+            return RedirectToAction("Index", "Projects");
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Edit(int id, Comment comment)
         {
-            try
-            {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+            Comment item = db.Comments.Find(id);
+            string currentUserId = User.Identity.GetUserId();
+
+
+
+            if (item == null)
+                return RedirectToAction("Index", "Projects");
+
+            if (!(User.IsInRole("Administrator") || item.UserId == currentUserId))
+                return RedirectToAction("Index", "Projects");
+
+                if (ModelState.IsValid)
             {
-                return View();
+
+                if (TryUpdateModel(item))
+                {
+                    item.Content = comment.Content;
+                    item.LastUpdate = DateTime.Now;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "Tasks", new { id = item.TaskId });
+                }
             }
+            return RedirectToAction("Edit", new { id });
+
         }
 
-        public ActionResult Delete(int id)
+
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Delete(int commentId)
         {
-            return View();
+            Comment item = db.Comments.Find(commentId);
+            if(item == null)
+                return RedirectToAction("Index", "Projects");
+
+            string currentUserId = User.Identity.GetUserId();
+
+            if (!(User.IsInRole("Administrator") || item.UserId == currentUserId))
+                return RedirectToAction("Index", "Projects");
+
+            int taskId = item.TaskId;
+            db.Comments.Remove(item);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Tasks", new { id = taskId });
         }
 
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

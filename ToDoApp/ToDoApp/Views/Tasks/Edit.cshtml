@@ -48,7 +48,6 @@
         </div>
     </div>
 
-    @Html.HiddenFor(model => model.ProjectId)
     @if (ViewBag.HasRights)
     {
         <div class="form-group">
@@ -85,7 +84,6 @@
         @Html.HiddenFor(model => model.StartDate)
         @Html.HiddenFor(model => model.EndDate)
     }
-    @Html.HiddenFor(model => model.LastUpdate)
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

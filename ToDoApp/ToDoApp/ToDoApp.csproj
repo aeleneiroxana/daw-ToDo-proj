@@ -283,6 +283,9 @@
     <Content Include="Views\Shared\ProjectTasks.cshtml" />
     <Content Include="Views\Tasks\Edit.cshtml" />
     <Content Include="Views\Tasks\Details.cshtml" />
+    <Content Include="Views\Shared\AddComment.cshtml" />
+    <Content Include="Views\Shared\TaskComments.cshtml" />
+    <Content Include="Views\Comments\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

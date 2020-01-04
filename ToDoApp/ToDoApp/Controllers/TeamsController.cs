@@ -72,7 +72,6 @@ namespace ToDoApp.Controllers
         public ActionResult Create()
         {
             Team team = new Team();
-            team.UserId = User.Identity.GetUserId();
             return View(team);
         }
 
@@ -91,6 +90,7 @@ namespace ToDoApp.Controllers
 
                 UserToTeam userToTeam = new UserToTeam() { TeamId = team.TeamId, UserId = currentUserId };
                 team.LastUpdate = DateTime.Now;
+                team.UserId = User.Identity.GetUserId();
 
                 db.Teams.Add(team);
                 db.UsersToTeams.Add(userToTeam);
