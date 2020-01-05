@@ -42,7 +42,6 @@
                 <td style="border: none; text-align: center; width: 170px">
                     @Html.ActionLink("Change role", "ChangeRole", new { id = item.Id }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
                     <a href="@Url.Action("Create","Teams")" style="float: right; margin-top: 0;"><i class="material-icons" style="color: #54b86f; font-size:20px; padding: 0;">delete</i></a>
                 </td>
             </tr>
@@ -55,18 +54,6 @@
     html, body {
         overflow-x: hidden;
     }
-
-    /*dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
-                color: white;
-            }
-
-            .anotheruser {
-                color: white;
-            }
-
-            .anotheruser:hover {
-                color: #7792bf;
-            }*/
 
     table, th, td {
         border: 1px solid black;

@@ -10,73 +10,60 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Project</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group" style="text-align: left; width:550px;">
-        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align:left;" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Project</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group" style="text-align: left; width:550px;">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align:left;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="text-align:left; width:550px;">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align:left;" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="width:550px;">
+            <label class="control-label col-md-2" style="color:white; text-align:left;">Team</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"), "Select team", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+
+        @Html.HiddenFor(model => model.LastUpdate)
+
+        <div class="form-group" style="">
+
+            <div class="col-md-offset-0 col-md-1" style="text-align:left;">
+                <input type="submit" style="width:100px; background-color: #4CAF50; color: black; border: none; font-weight:600; margin-bottom:20px;" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
+}
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
 
-    <div class="form-group" style="text-align:left; width:550px;">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align:left;" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    h1, h2, h3, h4, h5, h6, p {
+        color: white;
+    }
 
-    @*<label>Change team to assign to</label>*@
-    <div class="form-group" style="width:550px;">
-        <label class="control-label col-md-2" style="color:white; text-align:left;">Team</label>
-        <div class="col-md-10">
-            @Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"), "Select team", new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    @*@Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"),
-            "Select team", new { @class = "form-control" })
+    .anotheruser {
+        color: white;
+    }
 
-        @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })*@
-    <br />
-
-
-    @Html.HiddenFor(model => model.LastUpdate)
-
-<div class="form-group" style="">
-    @*<div class="col-md-offset-0 col-md-1" style="text-align:left; width:150px; margin-top:7px;">
-        @Html.ActionLink("Back to projects", "Index", null, new { @class = "backLink" })
-    </div>*@
-
-    <div class="col-md-offset-0 col-md-1" style="text-align:left;">
-        <input type="submit" style="width:100px; background-color: #4CAF50; color: black; border: none; font-weight:600; margin-bottom:20px;" value="Save" class="btn btn-default" />
-    </div>
-</div>
-</div>
+        .anotheruser:hover {
+            color: #7792bf;
         }
-
-        @*<div>
-            @Html.ActionLink("Back to List", "Index")
-        </div>*@
-
-        <style>
-            html, body {
-                overflow-x: hidden;
-            }
-
-            h1, h2, h3, h4, h5, h6, p {
-                color: white;
-            }
-
-            .anotheruser {
-                color: white;
-            }
-
-                .anotheruser:hover {
-                    color: #7792bf;
-                }
-        </style>
+</style>

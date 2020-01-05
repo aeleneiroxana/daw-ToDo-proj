@@ -33,19 +33,12 @@
 <div>
     @if (ViewBag.HasRights)
     {
-        @*@Html.ActionLink("Edit ", "Edit", new { id = Model.TeamId })*@
         @Html.ActionLink("Edit", "Edit", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-        @*<br>*@
-        @*@Html.ActionLink("Delete ", "Delete", new { id = Model.TeamId })*@
         @Html.ActionLink("Delete", "Delete", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
         <br/>
         @Html.ActionLink("Add member ", "AddMember", new { teamId = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
     }
 </div>
-@*<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>*@
-
 
 <br />
 <br />

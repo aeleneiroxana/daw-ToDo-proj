@@ -37,12 +37,6 @@
             @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })
         </div>
     </div>
-    @*<label>Select team to assign to</label>
-
-        @Html.DropDownListFor(m => m.TeamId, new SelectList(ViewBag.Teams, "Value", "Text"),
-            "Select team", new { @class = "form-control" })
-
-        @Html.ValidationMessageFor(m => m.TeamId, "", new { @class = "text-danger" })*@
     <br />
 
 
@@ -56,10 +50,6 @@
 </div>
 </div>
 }
-
-@*<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>*@
 
 <style>
     html, body {
