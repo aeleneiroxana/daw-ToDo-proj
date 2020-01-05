@@ -4,20 +4,19 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 style="color: white;">Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Comment</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.CommentId)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-group" style="text-align: left; width:550px;">
+        @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2", Style = "color:white; text-align: left;" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
@@ -28,9 +27,9 @@
     @Html.HiddenFor(model => model.UserId)
     @Html.HiddenFor(model => model.DateAdded)
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group" style="">
+        <div class="col-md-offset-0 col-md-1" style="text-align:left;">
+            <input type="submit" style="width:70px; background-color: #4CAF50; color: black; border: none; font-weight:600; margin-bottom:20px;" value="Save" class="btn btn-default" />
         </div>
     </div>
 </div>
