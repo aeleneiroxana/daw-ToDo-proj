@@ -1,0 +1,48 @@
+﻿@model ToDoApp.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "ChangeRole";
+}
+
+<h2>Change User Role</h2>
+<ul>
+    @{
+        List<SelectListItem> roles = ViewBag.CurrentRoles;
+        List<SelectListItem> allRoles = ViewBag.AllRoles;
+        foreach (SelectListItem role in allRoles)
+        {
+            if (roles.Exists(x => x.Value == role.Value))
+            {
+                <li>
+                    @Html.ActionLink("Remove " + role.Text + " role ", "RemoveRole", new { userId = Model.Id, roleId = role.Value })
+                </li>
+            }
+            else
+            {
+                <li>
+                    @Html.ActionLink("Add " + role.Text + " role ", "AddRole", new { userId = Model.Id, roleId = role.Value })
+                </li>
+            }
+        }
+    }
+
+</ul>
+
+
+<style>
+    html, body {
+        overflow-x: hidden;
+    }
+
+    dd, dt, h1, h2, h3, h4, h5, h6, p, th, td,li {
+        color: white;
+    }
+
+    .anotheruser {
+        color: white;
+    }
+
+        .anotheruser:hover {
+            color: #7792bf;
+        }
+</style>

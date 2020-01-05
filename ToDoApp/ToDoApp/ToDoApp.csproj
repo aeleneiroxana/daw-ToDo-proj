@@ -286,6 +286,7 @@
     <Content Include="Views\Shared\AddComment.cshtml" />
     <Content Include="Views\Shared\TaskComments.cshtml" />
     <Content Include="Views\Comments\Edit.cshtml" />
+    <Content Include="Views\Users\ChangeRole.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -116,7 +116,7 @@ namespace ToDoApp.Controllers
                 }
             }
 
-            return RedirectToAction("Create", new { projectId = item.ProjectId });
+            return View(item);
 
         }
 
@@ -193,7 +193,7 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
-            return RedirectToAction("Edit", new { id });
+            return View(task);
 
         }
 
