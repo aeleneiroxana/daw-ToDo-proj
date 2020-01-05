@@ -3,66 +3,89 @@
 @{
     ViewBag.Title = "Index";
 }
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<div class="dashboard-content">
+    <h2 style="text-align:center; display: inline; margin-left: 42%;">Users</h2>
 
-<h2>Index</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccessFailedCount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+    <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none; border-top:none;">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccessFailedCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.ActionLink("Change role", "ChangeRole", new { id = item.Id }) |
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessFailedCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th style="border: none; text-align: center; width: 180px"></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AccessFailedCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td style="border: none; text-align: center; width: 170px">
+                    @Html.ActionLink("Change role", "ChangeRole", new { id = item.Id }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                    <a href="@Url.Action("Create","Teams")" style="float: right; margin-top: 0;"><i class="material-icons" style="color: #54b86f; font-size:20px; padding: 0;">delete</i></a>
+                </td>
+            </tr>
+        }
 
+    </table>
+</div>
 
 <style>
     html, body {
         overflow-x: hidden;
     }
 
-    dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
-        color: white;
+    /*dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
+                color: white;
+            }
+
+            .anotheruser {
+                color: white;
+            }
+
+            .anotheruser:hover {
+                color: #7792bf;
+            }*/
+
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
     }
 
-    .anotheruser {
-        color: white;
+    th {
+        text-align: center;
     }
 
-        .anotheruser:hover {
-            color: #7792bf;
-        }
+    td {
+        padding-left: 1%;
+    }
+
+    .dashboard-content {
+        width: 90%;
+        height: 100%;
+        background-color: #f1f1f1;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
 </style>
