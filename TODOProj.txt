@@ -22,7 +22,7 @@ Structura task: Titlu, Descriere, Status, Comm, StartDate, EndDate DONE
 Admin --> sterge task-uri DONE
 Admin --> sterge comentarii DONE
 Admin --> sterge echipe DONE
-Admin --> activeaza/revoca drepturile utilizatorilor
+Admin --> activeaza/revoca drepturile utilizatorilor DONE
 
 Echipa == Proiect
 __________________________________________________
