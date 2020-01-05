@@ -13,6 +13,7 @@ namespace ToDoApp.Controllers
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Logger Log = new Logger(typeof(ProjectsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
@@ -103,9 +104,15 @@ namespace ToDoApp.Controllers
                 string currentUserId = User.Identity.GetUserId();
 
                 project.LastUpdate = DateTime.Now;
-
-                db.Projects.Add(project);
-                db.SaveChanges();
+                try
+                {
+                    db.Projects.Add(project);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to create project. Error: " + ex.Message);
+                }
                 return RedirectToAction("Index");
             }
             return View(project);
@@ -148,7 +155,15 @@ namespace ToDoApp.Controllers
                     {
                         item.Description = project.Description;
                         item.Title = project.Title;
-                        db.SaveChanges();
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+
+                        catch (Exception ex)
+                        {
+                            Log.Error("Failed to edit project. Error: " + ex.Message);
+                        }
                         return RedirectToAction("Index");
                     }
                 }
@@ -158,6 +173,7 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
@@ -165,8 +181,15 @@ namespace ToDoApp.Controllers
 
             if (User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
             {
-                db.Projects.Remove(item);
-                db.SaveChanges();
+                try
+                {
+                    db.Projects.Remove(item);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to delete project. Error: " + ex.Message);
+                }
             }
             return RedirectToAction("Index");
         }

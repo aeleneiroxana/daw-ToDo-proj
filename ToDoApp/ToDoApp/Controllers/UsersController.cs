@@ -14,6 +14,7 @@ namespace ToDoApp.Controllers
     public class UsersController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Logger Log = new Logger(typeof(UsersController));
 
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
@@ -44,7 +45,14 @@ namespace ToDoApp.Controllers
                     item.Email = user.Email;
                     item.PhoneNumber = user.PhoneNumber;
                     item.UserName = user.UserName;
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to edit user. Error: " + ex.Message);
+                    }
                     return RedirectToAction("Index");
                 }
             }
@@ -73,9 +81,15 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index");
 
             UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-
-            if (!UserManager.GetRoles(user.Id).Contains(role.Name))
-                UserManager.AddToRole(user.Id, role.Name);
+            try
+            {
+                if (!UserManager.GetRoles(user.Id).Contains(role.Name))
+                    UserManager.AddToRole(user.Id, role.Name);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to add role to user. Error: " + ex.Message);
+            }
             return RedirectToAction("ChangeRole", new { id = userId });
         }
 
@@ -93,8 +107,14 @@ namespace ToDoApp.Controllers
                 if (role.Name == "Manager")
                     return RedirectToAction("ChangeManager", new { userId });
                 else
-                    UserManager.RemoveFromRole(user.Id, role.Name);
-
+                    try
+                    {
+                        UserManager.RemoveFromRole(user.Id, role.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to remove role from user. Error: " + ex.Message);
+                    }
             return RedirectToAction("ChangeRole", new { id = userId });
         }
 
@@ -113,11 +133,18 @@ namespace ToDoApp.Controllers
 
             if (teams.Count == 0)
             {
-                UserManager.RemoveFromRole(userId, "Manager");
+                try
+                {
+                    UserManager.RemoveFromRole(userId, "Manager");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to remove manager from team. Error: " + ex.Message);
+                }
                 return RedirectToAction("Index");
             }
 
-             IEnumerable<SelectListItem> allUsers = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != userId));
+            IEnumerable<SelectListItem> allUsers = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != userId));
             TeamsNewManager item = new TeamsNewManager()
             {
                 formerManagerId = userId,
@@ -139,15 +166,15 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index");
 
             List<Team> teams = db.Teams.ToList().FindAll(x => x.UserId == user.Id);
-            foreach(Team team in teams)
+            foreach (Team team in teams)
             {
                 Team actualTeam = db.Teams.Find(team.TeamId);
-                if(TryUpdateModel(actualTeam))
+                if (TryUpdateModel(actualTeam))
                 {
                     actualTeam.UserId = item.newManagerId;
                     db.SaveChanges();
                 }
-                if(!db.UsersToTeams.ToList().Exists(x => x.UserId == item.newManagerId && x.TeamId == team.TeamId))
+                if (!db.UsersToTeams.ToList().Exists(x => x.UserId == item.newManagerId && x.TeamId == team.TeamId))
                 {
                     UserToTeam newItem = new UserToTeam()
                     {
@@ -159,20 +186,34 @@ namespace ToDoApp.Controllers
                 }
 
             }
+            try
+            {
+                if (!UserManager.GetRoles(newManager.Id).Contains("Manager"))
+                    UserManager.AddToRole(newManager.Id, "Manager");
 
-            if(!UserManager.GetRoles(newManager.Id).Contains("Manager"))
-                UserManager.AddToRole(newManager.Id, "Manager");
-
-            UserManager.RemoveFromRole(user.Id, "Manager");
+                UserManager.RemoveFromRole(user.Id, "Manager");
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to process changing teams manager. Error: " + ex.Message);
+            }
             return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Administrator")]
+        [HttpDelete]
         public ActionResult Delete(string id)
         {
             ApplicationUser item = db.Users.Find(id);
-            db.Users.Remove(item);
-            db.SaveChanges();
+            try
+            {
+                db.Users.Remove(item);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to delete user. Error: " + ex.Message);
+            }
             return RedirectToAction("Index");
         }
 

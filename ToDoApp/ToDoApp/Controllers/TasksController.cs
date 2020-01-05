@@ -14,6 +14,7 @@ namespace ToDoApp.Controllers
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Logger Log = new Logger(typeof(TasksController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
@@ -27,7 +28,7 @@ namespace ToDoApp.Controllers
                 IEnumerable<Task> allTasks = db.Tasks.ToList().AsEnumerable();
                 return View(allTasks);
             }
-                ViewBag.HasRights = false;
+            ViewBag.HasRights = false;
             IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).AsEnumerable();
             return View(tasks);
         }
@@ -68,7 +69,7 @@ namespace ToDoApp.Controllers
             if (project == null)
                 return RedirectToAction("Index", "Projects");
 
-            if(project.Team.UserId == currentUserId)
+            if (project.Team.UserId == currentUserId)
                 ViewBag.HasTaskRights = true;
 
             ViewBag.CurrentUserId = currentUserId;
@@ -135,8 +136,16 @@ namespace ToDoApp.Controllers
                     if (item.Status == TaskStatus.Completed && item.EndDate == null)
                         item.EndDate = DateTime.Now;
 
-                    db.Tasks.Add(item);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.Tasks.Add(item);
+                        db.SaveChanges();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to create task. Error: " + ex.Message);
+                    }
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
@@ -214,7 +223,15 @@ namespace ToDoApp.Controllers
                     item.StartDate = task.StartDate;
                     item.Status = task.Status;
                     item.Title = task.Title;
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to edit task. Error: " + ex.Message);
+                    }
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
@@ -224,6 +241,7 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager")]
+        [HttpDelete]
         public ActionResult Delete(int taskId)
         {
             string currentUserId = User.Identity.GetUserId();
@@ -237,8 +255,15 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index", "Projects");
 
             int projectId = task.ProjectId;
-            db.Tasks.Remove(task);
-            db.SaveChanges();
+            try
+            {
+                db.Tasks.Remove(task);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to delete task. Error: " + ex.Message);
+            }
             return RedirectToAction("Details", "Projects", new { id = projectId });
         }
 
