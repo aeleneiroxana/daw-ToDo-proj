@@ -29,7 +29,6 @@ namespace ToDoApp.Controllers
                 else
                     ViewBag.HasRights = false;
                 string currentUserId = User.Identity.GetUserId();
-                //List<UserToProject> userProjects = db.UsersToProjects.ToList().FindAll(x => x.UserId == currentUserId);
                 List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
 
                 ViewBag.Projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
@@ -109,7 +108,7 @@ namespace ToDoApp.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Create");
+            return View(project);
         }
 
         [Authorize(Roles = "Administrator,Manager")]
@@ -153,7 +152,7 @@ namespace ToDoApp.Controllers
                         return RedirectToAction("Index");
                     }
                 }
-                return RedirectToAction("Edit", new { id });
+                return View(project);
             }
             return RedirectToAction("Index");
         }

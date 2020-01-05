@@ -29,22 +29,21 @@
         </div>
     </div>
 
-    
+
     <div style="height:97%;">
         <div class="sidebar">
-            <a class="active" href="@Url.Action("Index","Dashboard")"><i class="fa fa-fw fa-home" style="font-size:25px;"></i></a>
-            @*<a class="active" href="#home">Dashboard</a>*@
+            <a class="active" href="@Url.Action("Index", "Dashboard")"><i class="fa fa-fw fa-home" style="font-size:25px;"></i></a>
             <a href="@Url.Action("Index", "Teams")">Teams</a>
             <a href="@Url.Action("Index", "Projects")">Projects</a>
-            <a href="@Url.Action("Index", "Users")">Users<!--<i class="fa fa-fw fa-home" style="font-size:25px;"></i>--></a>
             <a href="@Url.Action("Index", "Tasks")">Tasks</a>
+            @if (User.IsInRole("Administrator"))
+            {
+                <a href="@Url.Action("Index", "Users")">Users</a>
+            }
         </div>
         <div class="container body-content" style="padding-left:80px;">
             @RenderBody()
-            @*<hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>*@
+
         </div>
     </div>
 

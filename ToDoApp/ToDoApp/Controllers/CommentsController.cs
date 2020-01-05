@@ -71,7 +71,7 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Details", "Tasks", new { id = item.TaskId });
                 }
             }
-            return RedirectToAction("Edit", new { id });
+            return View(comment);
 
         }
 

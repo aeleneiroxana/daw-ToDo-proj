@@ -194,7 +194,7 @@ namespace ToDoApp.Controllers
                 }
             }
 
-            return RedirectToAction("AddMember", new { teamId = item.TeamId});
+            return View(item);
 
         }
 
