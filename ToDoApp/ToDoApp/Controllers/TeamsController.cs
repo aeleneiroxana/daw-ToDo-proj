@@ -154,7 +154,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Team item = db.Teams.Find(id);
@@ -198,17 +197,17 @@ namespace ToDoApp.Controllers
         [HttpPost]
         public ActionResult AddMember(UserToTeam item)
         {
+            Team team;
+            string currentUserId = User.Identity.GetUserId();
+            if (User.IsInRole("Administrator"))
+                team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId);
+            else
+                team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId && x.UserId == currentUserId);
+            if (team == null)
+                return RedirectToAction("Index");
+
             if (ModelState.IsValid)
             {
-                Team team;
-                string currentUserId = User.Identity.GetUserId();
-                if (User.IsInRole("Administrator"))
-                    team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId);
-                else
-                    team = db.Teams.FirstOrDefault(x => x.TeamId == item.TeamId && x.UserId == currentUserId);
-                if (team == null)
-                    return RedirectToAction("Index");
-
                 if (TryUpdateModel(item))
                 {
                     try
@@ -223,6 +222,8 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Details", new { id = team.TeamId });
                 }
             }
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == team.TeamId);
+            ViewBag.Members = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != currentUserId && !currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
 
             return View(item);
 
@@ -230,7 +231,6 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult RemoveMember(int teamId, string memberId)
         {
             Team team;

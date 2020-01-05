@@ -14,12 +14,14 @@ namespace ToDoApp.Models
         public int ProjectId { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string Title { get; set; }
 
         [Required]
         public int TeamId { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]
