@@ -91,7 +91,7 @@
     {
         if (Model.AssignedUserId == ViewBag.CurrentUserId)
         {
-            @Html.ActionLink("Change Status", "Edit", "Tasks", new { id = Model.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+            @Html.ActionLink("Change Status", "Edit", "Tasks", new { id = Model.TaskId }, htmlAttributes: null)
         }
     }
 }

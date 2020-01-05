@@ -4,102 +4,100 @@
     ViewBag.Title = "Index";
 }
 
-<div class="dashboard-content">
-    <h2 style="text-align:center; display: inline; margin-left: 42%;">Tasks</h2>
+<h2>Index</h2>
 
-    <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none; border-top: none; border-right: none;">
+<table class="table">
+    <tr>
+        <th>
+            Project Title
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        @if (ViewBag.HasRights)
+        {
+            <th>
+                Assigned User
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                Project Title
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            @*<th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
             @if (ViewBag.HasRights)
             {
-                <th>
-                    Assigned User
-                </th>
-            }
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th style="border-top: none; border-right: none;  border-bottom: none;"></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Project.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                @*<td style="font-size: 10px;">
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                @if (ViewBag.HasRights)
+                if (item.AssignedUserId != null)
                 {
-                    if (item.AssignedUserId != null)
+                    var db = new ToDoApp.Models.ApplicationDbContext();
+                    string name = "None";
+                     var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
+                    if (user != null)
                     {
-                        var db = new ToDoApp.Models.ApplicationDbContext();
-                        string name = "None";
-                        var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
-                        if (user != null)
-                        {
-                            name = user.UserName;
-                        }
-                        <td>
-                            @Html.DisplayFor(modelItem => name)
-                        </td>
+                        name = user.UserName;
                     }
-                    else
-                    {
-                        <td>
-                            None
-                        </td>
-                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => name)
+                    </td>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
+                else
+                {
+                    <td>
+                        None
+                    </td>
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
 
-                <td style="border: none;">
-                    @if (ViewBag.HasRights || ViewBag.CurrentUserId == item.Project.Team.UserId)
-                    {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })}
-                    else
-                    {
-                        @Html.ActionLink("Change status", "Edit", new { id = item.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })}
-                    @Html.ActionLink("Details", "Details", new { id = item.TaskId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-                </td>
-            </tr>
-        }
+            <td>
+                @if (ViewBag.HasRights || ViewBag.CurrentUserId == item.Project.Team.UserId)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TaskId })}
+                else
+                {
+                    @Html.ActionLink("Change status", "Edit", new { id = item.TaskId })}|
+                @Html.ActionLink("Details", "Details", new { id = item.TaskId })
+            </td>
+        </tr>
+    }
 
-    </table>
-</div>
+</table>
 
 <style>
     table, th, td {
         border: 1px solid black;
         border-collapse: collapse;
-        /*color: white;*/
+        color:white;
     }
 
     th {
@@ -110,7 +108,6 @@
         max-width: 300px;
         padding-left: 1%;
         overflow-x: auto;
-        overflow-y: auto;
     }
 
     .dashboard-content {

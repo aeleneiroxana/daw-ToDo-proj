@@ -29,8 +29,8 @@
             <td>
                 @if (ViewBag.HasRights || ViewBag.CurrentUserId == item.UserId)
                 {
-                    @Html.ActionLink("Edit ", "Edit", "Comments", new { id = item.CommentId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-                    @Html.ActionLink("Delete ", "Delete","Comments", new { commentId = item.CommentId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                    @Html.ActionLink("Edit ", "Edit", "Comments", new { id = item.CommentId }, htmlAttributes:null)
+                    @Html.ActionLink("Delete ", "Delete","Comments", new { commentId = item.CommentId }, htmlAttributes:null)
                 }
             </td>
         </tr>
