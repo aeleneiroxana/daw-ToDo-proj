@@ -13,6 +13,7 @@ namespace ToDoApp.Models
         public int TeamId { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string Title { get; set; }
 
         //[Required]

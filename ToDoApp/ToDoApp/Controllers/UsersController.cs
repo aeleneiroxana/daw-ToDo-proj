@@ -24,42 +24,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit(string id)
-        {
-            ApplicationUser user = db.Users.Find(id);
-            if (user != null)
-                return View(user);
-
-            return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "Administrator")]
-        [HttpPost]
-        public ActionResult Edit(string id, ApplicationUser user)
-        {
-            ApplicationUser item = db.Users.Find(id);
-            if (ModelState.IsValid)
-            {
-                if (TryUpdateModel(item))
-                {
-                    item.Email = user.Email;
-                    item.UserName = user.UserName;
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error("Failed to edit user. Error: " + ex.Message);
-                    }
-                    return RedirectToAction("Index");
-                }
-            }
-            return View(user);
-
-        }
-
-        [Authorize(Roles = "Administrator")]
         public ActionResult ChangeRole(string id)
         {
             ApplicationUser user = db.Users.Find(id);

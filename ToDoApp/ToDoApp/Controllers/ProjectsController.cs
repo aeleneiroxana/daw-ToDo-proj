@@ -99,9 +99,10 @@ namespace ToDoApp.Controllers
         public ActionResult Create(Project project)
         {
 
+            string currentUserId = User.Identity.GetUserId();
+
             if (ModelState.IsValid)
             {
-                string currentUserId = User.Identity.GetUserId();
 
                 project.LastUpdate = DateTime.Now;
                 try
@@ -115,6 +116,15 @@ namespace ToDoApp.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
+            }
+            else
+            {
+                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
+                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId) && x.UserId == currentUserId));
+            }
             return View(project);
         }
 
@@ -126,13 +136,10 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
-                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
             }
             else
             {
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.Team.UserId == currentUserId);
-                List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
-                ViewBag.Teams = TeamsToSelectList(db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId) && x.UserId == currentUserId));
             }
             if (project != null)
                 return View(project);

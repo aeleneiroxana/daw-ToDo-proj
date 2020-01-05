@@ -117,17 +117,17 @@ namespace ToDoApp.Controllers
         [HttpPost]
         public ActionResult Create(Task item)
         {
+            Project project;
+            string currentUserId = User.Identity.GetUserId();
+            if (User.IsInRole("Administrator"))
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
+            else
+                project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId && x.Team.UserId == currentUserId);
+            if (project == null)
+                return RedirectToAction("Index", "Projects");
+
             if (ModelState.IsValid)
             {
-                Project project;
-                string currentUserId = User.Identity.GetUserId();
-                if (User.IsInRole("Administrator"))
-                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
-                else
-                    project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId && x.Team.UserId == currentUserId);
-                if (project == null)
-                    return RedirectToAction("Index", "Projects");
-
                 if (TryUpdateModel(item))
                 {
                     item.LastUpdate = DateTime.Now;
@@ -149,6 +149,8 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
 
             return View(item);
 
@@ -235,6 +237,18 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
+            if (User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
+                ViewBag.HasRights = true;
+            else
+            {
+                if (task.AssignedUserId == currentUserId)
+                    ViewBag.HasRights = false;
+                else
+                    return RedirectToAction("Index", "Projects");
+            }
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
+
             return View(task);
 
         }

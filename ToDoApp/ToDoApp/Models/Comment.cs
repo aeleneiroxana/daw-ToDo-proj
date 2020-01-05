@@ -13,6 +13,7 @@ namespace ToDoApp.Models
         public int CommentId { get; set; }
 
         [Required]
+        [MaxLength(250)]
         public string Content { get; set; }
 
         [Required]
