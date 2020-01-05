@@ -1,0 +1,118 @@
+﻿@model IEnumerable<ToDoApp.Models.Task>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Project Title
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        @if (ViewBag.HasRights)
+        {
+            <th>
+                Assigned User
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            @if (ViewBag.HasRights)
+            {
+                if (item.AssignedUserId != null)
+                {
+                    var db = new ToDoApp.Models.ApplicationDbContext();
+                    string name = "None";
+                     var user = db.Users.FirstOrDefault(x => x.Id == item.AssignedUserId);
+                    if (user != null)
+                    {
+                        name = user.UserName;
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => name)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        None
+                    </td>
+                }
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+
+            <td>
+                @if (ViewBag.HasRights || ViewBag.CurrentUserId == item.Project.Team.UserId)
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TaskId })}
+                else
+                {
+                    @Html.ActionLink("Change status", "Edit", new { id = item.TaskId })}|
+                @Html.ActionLink("Details", "Details", new { id = item.TaskId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        color:white;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        padding-left: 1%;
+    }
+
+    .dashboard-content {
+        width: 90%;
+        height: 100%;
+        background-color: #f1f1f1;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+</style>

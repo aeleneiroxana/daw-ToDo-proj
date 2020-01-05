@@ -16,6 +16,23 @@ namespace ToDoApp.Controllers
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult Index()
+        {
+            string currentUserId = User.Identity.GetUserId();
+            ViewBag.CurrentUserId = currentUserId;
+
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.HasRights = true;
+                IEnumerable<Task> allTasks = db.Tasks.ToList().AsEnumerable();
+                return View(allTasks);
+            }
+                ViewBag.HasRights = false;
+            IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).AsEnumerable();
+            return View(tasks);
+        }
+
+        [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Details(int id)
         {
             string currentUserId = User.Identity.GetUserId();
