@@ -43,7 +43,6 @@ namespace ToDoApp.Controllers
                 if (TryUpdateModel(item))
                 {
                     item.Email = user.Email;
-                    item.PhoneNumber = user.PhoneNumber;
                     item.UserName = user.UserName;
                     try
                     {
