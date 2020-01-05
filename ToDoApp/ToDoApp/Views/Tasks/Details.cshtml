@@ -81,10 +81,20 @@
 
     </dl>
 </div>
-@*<p>
-    @Html.ActionLink("Back to Project", "Details", "Projects", routeValues: new { id = Model.ProjectId }, htmlAttributes: null)
-</p>*@
-
+@{
+    if (ViewBag.HasTaskRights)
+    {
+        @Html.ActionLink("Edit ", "Edit", "Tasks", new { id = Model.TaskId }, htmlAttributes: new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        @Html.ActionLink("Remove ", "Delete", "Tasks", new { taskId = Model.TaskId }, htmlAttributes: new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+    }
+    else
+    {
+        if (Model.AssignedUserId == ViewBag.CurrentUserId)
+        {
+            @Html.ActionLink("Change Status", "Edit", "Tasks", new { id = Model.TaskId }, htmlAttributes: null)
+        }
+    }
+}
 <br />
 <div>
     @Html.Partial("TaskComments", (List<ToDoApp.Models.Comment>)ViewBag.TaskComments)

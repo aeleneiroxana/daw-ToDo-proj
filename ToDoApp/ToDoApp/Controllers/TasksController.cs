@@ -24,6 +24,7 @@ namespace ToDoApp.Controllers
 
             if (User.IsInRole("Administrator"))
             {
+                ViewBag.HasTaskRights = true;
                 ViewBag.HasRights = true;
                 if (item != null)
                 {
@@ -39,14 +40,21 @@ namespace ToDoApp.Controllers
                     return RedirectToAction("Index", "Projects");
             }
             else
+            {
                 ViewBag.HasRights = false;
-
+                ViewBag.HasTaskRights = false;
+            }
             if (item == null)
                 return RedirectToAction("Index", "Projects");
 
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
             if (project == null)
                 return RedirectToAction("Index", "Projects");
+
+            if(project.Team.UserId == currentUserId)
+                ViewBag.HasTaskRights = true;
+
+            ViewBag.CurrentUserId = currentUserId;
 
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
             List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
