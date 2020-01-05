@@ -7,10 +7,10 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Project</h4>
+    @*<h4>Project</h4>*@
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
 
@@ -18,7 +18,7 @@
             @Html.DisplayFor(model => model.Title)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
 
@@ -26,7 +26,7 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.Team.User.UserName)
         </dt>
 
@@ -34,7 +34,7 @@
             @Html.DisplayFor(model => model.Team.User.UserName)
         </dd>
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             Team Title
         </dt>
 
@@ -43,7 +43,7 @@
         </dd>
 
 
-        <dt>
+        <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.LastUpdate)
         </dt>
 
@@ -55,16 +55,18 @@
 <div>
     @if (ViewBag.HasRights)
     {
-        @Html.ActionLink("Edit ", "Edit", new { id = Model.ProjectId })
+        @Html.ActionLink("Edit ", "Edit", new { id = Model.ProjectId }, new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        
+        @Html.ActionLink("Delete ", "Delete", new { id = Model.ProjectId }, new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        
+        @Html.ActionLink("Add task ", "Create", "Tasks", routeValues: new { projectId = Model.ProjectId }, htmlAttributes: new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+        
 
-        @Html.ActionLink("Add task ", "Create", "Tasks", routeValues: new { projectId = Model.ProjectId }, htmlAttributes:null)
-
-        @Html.ActionLink("Delete ", "Delete", new { id = Model.ProjectId })
     }
 </div>
-<p>
+@*<p>
     @Html.ActionLink("Back to List", "Index")
-</p>
+</p>*@
 
 <br />
 <br />
