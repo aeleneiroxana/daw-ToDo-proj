@@ -4,14 +4,14 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2 style="color: white;">Edit</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Task</h4>
+    @*<h4 style="color:white;">Task</h4>*@
     <hr />
     @Html.HiddenFor(model => model.TaskId)
 
@@ -19,16 +19,16 @@
 
     @if (ViewBag.HasRights)
     {
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+        <div class="form-group" style="text-align: left; width:550px;">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align: left;" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+        <div class="form-group" style="text-align: left; width:550px;">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align: left;" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -40,8 +40,8 @@
         @Html.HiddenFor(model => model.Title)
         @Html.HiddenFor(model => model.Description)
     }
-    <div class="form-group">
-        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+    <div class="form-group" style="text-align: left; width:550px;">
+        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align: left;" })
         <div class="col-md-10">
             @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
@@ -50,28 +50,35 @@
 
     @if (ViewBag.HasRights)
     {
-        <div class="form-group">
-            <label style="color:white">
-                Select member to assign to
-            </label>
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.AssignedUserId, new SelectList(ViewBag.TeamMembers, "Value", "Text"),
-                 "Select member", new { @class = "form-control" })
+        @*<div class="form-group" style="text-align: left; width:550px;">
+                <label style="color:white">
+                    Member
+                </label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.AssignedUserId, new SelectList(ViewBag.TeamMembers, "Value", "Text"),
+                     "Select member", new { @class = "form-control" })
 
+                    @Html.ValidationMessageFor(m => m.AssignedUserId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group" style="width:550px;">
+            <label class="control-label col-md-2" style="color:white; text-align:left;">Member</label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.AssignedUserId, new SelectList(ViewBag.TeamMembers, "Value", "Text"), "Select member", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.AssignedUserId, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+        <div class="form-group" style="text-align: left; width:550px;">
+            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align: left;" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white" })
+        <div class="form-group" style="text-align: left; width:550px;">
+            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2", Style = "color: white; text-align: left;" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
@@ -85,9 +92,9 @@
         @Html.HiddenFor(model => model.EndDate)
     }
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group" style="">
+        <div class="col-md-offset-0 col-md-1" style="text-align:left;">
+            <input type="submit" style="width:70px; background-color: #4CAF50; color: black; border: none; font-weight:600; margin-bottom:20px;" value="Save" class="btn btn-default" />
         </div>
     </div>
 </div>
