@@ -222,23 +222,18 @@ namespace ToDoApp.Controllers
         [NonAction]
         public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
         {
-            List<SelectListItem> selectList = new List<SelectListItem>
-            {
-                new SelectListItem { Value = null, Text = "None" }
-            };
-
-            List<SelectListItem> partialSelectList = new List<SelectListItem>();
+            List<SelectListItem> selectList = new List<SelectListItem>();
 
             foreach (var user in users)
             {
-                partialSelectList.Add(new SelectListItem
+                selectList.Add(new SelectListItem
                 {
                     Value = user.Id.ToString(),
                     Text = user.UserName.ToString()
                 });
             }
 
-            selectList = selectList.Concat(partialSelectList.OrderBy(x => x.Text)).ToList();
+            selectList = selectList.OrderBy(x => x.Text).ToList();
 
             return selectList;
         }
