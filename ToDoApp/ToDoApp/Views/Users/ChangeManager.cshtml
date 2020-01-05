@@ -1,38 +1,29 @@
-﻿@model Dictionary<int, string>
+﻿@model ToDoApp.Models.TeamsNewManager
+
 @{
-    ViewBag.Title = "ChangeManagers";
+    ViewBag.Title = "ChangeManager";
 }
 
-<h2>Change Managers</h2>
+<h2>Change Manager</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @{
-            Dictionary<int, string>
-                teamsNames = ViewBag.TeamsNames;
-            Dictionary<int, List<SelectListItem>> teamsMembers = ViewBag.TeamsMembers;
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
 
-            foreach (KeyValuePair<int, string> newManager in Model)
-            {
-                teamsNames.TryGetValue(newManager.Key, out string teamName);
-                teamsMembers.TryGetValue(newManager.Key, out List<SelectListItem> teamMembers);
+            @Html.HiddenFor(model => model.formerManagerId)
 
-                <div class="form-group">
-                    <label style="color:white">
-                        Select member to assign as manager for team @teamName
-                    </label>
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => Model[newManager.Key], new SelectList(teamMembers, "Value", "Text"),
-                         "Select member", new { @class = "form-control" })
-
-                        @Html.ValidationMessageFor(model => Model[newManager.Key], "", new { @class = "text-danger" })
-                    </div>
+            
+                <div class="col-md-10">
+                    @Html.Label("Select new manager")
+                    @Html.DropDownListFor(m => Model.newManagerId, new SelectList(ViewBag.AllUsers, "Value", "Text"), "Select team manager", new { @class = "form-control" })
                 </div>
-            }
-        }
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -41,22 +32,3 @@
     </div>
 }
 
-
-
-<style>
-    html, body {
-        overflow-x: hidden;
-    }
-
-    dd, dt, h1, h2, h3, h4, h5, h6, p, th, td {
-        color: white;
-    }
-
-    .anotheruser {
-        color: white;
-    }
-
-        .anotheruser:hover {
-            color: #7792bf;
-        }
-</style>

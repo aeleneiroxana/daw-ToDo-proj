@@ -109,67 +109,62 @@ namespace ToDoApp.Controllers
             if (!UserManager.GetRoles(user.Id).Contains("Manager"))
                 return RedirectToAction("Index");
 
-            List<Team> userTeams = db.Teams.ToList().FindAll(x => x.UserId == userId);
-            Dictionary<int, List<SelectListItem>> teamsMembers = new Dictionary<int, List<SelectListItem>>();
-            Dictionary<int, string> teamsNames = new Dictionary<int, string>();
-            foreach (Team team in userTeams)
-            {
-                teamsNames.Add(team.TeamId, team.Title);
-                List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == team.TeamId && x.UserId != userId);
-                if (currentUsersOfTeam.Count > 0)
-                {
-                    teamsMembers.Add(team.TeamId, MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList());
-                }
-            }
-            if (teamsMembers.Count > 0)
-            {
-                ViewBag.TeamsMembers = teamsMembers;
-                ViewBag.TeamsNames = teamsNames;
-                Dictionary<int, string> newManagers = new Dictionary<int, string>();
-                foreach (KeyValuePair<int, List<SelectListItem>> item in teamsMembers)
-                    newManagers.Add(item.Key, item.Value.First().Value);
+            List<Team> teams = db.Teams.ToList().FindAll(x => x.UserId == userId);
 
-                return View(newManagers);
+            if (teams.Count == 0)
+            {
+                UserManager.RemoveFromRole(userId, "Manager");
+                return RedirectToAction("Index");
             }
-            UserManager.RemoveFromRole(user.Id, "Manager");
-            return RedirectToAction("ChangeRole", new { id = userId });
+
+             IEnumerable<SelectListItem> allUsers = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != userId));
+            TeamsNewManager item = new TeamsNewManager()
+            {
+                formerManagerId = userId,
+                newManagerId = allUsers.First().Value
+            };
+            ViewBag.AllUsers = allUsers;
+            return View(item);
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
-        public ActionResult ChangeManager(Dictionary<int, string> newManagers)
+        public ActionResult ChangeManager(TeamsNewManager item)
         {
-            List<Team> teams = db.Teams.ToList().FindAll(x => newManagers.ContainsKey(x.TeamId));
-            if (teams.Count == 0)
-                return RedirectToAction("Index");
-
-            string currentManagerId = teams.First().UserId;
+            ApplicationUser user = db.Users.Find(item.formerManagerId);
+            ApplicationUser newManager = db.Users.Find(item.newManagerId);
             UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
-            if (!UserManager.GetRoles(currentManagerId).Contains("Manager"))
+            if (user == null || newManager == null || !UserManager.GetRoles(user.Id).Contains("Manager"))
                 return RedirectToAction("Index");
 
-            if (!teams.All(x => x.UserId == currentManagerId))
-                return RedirectToAction("Index");
-
-            foreach (KeyValuePair<int, string> newManager in newManagers)
+            List<Team> teams = db.Teams.ToList().FindAll(x => x.UserId == user.Id);
+            foreach(Team team in teams)
             {
-                Team item = db.Teams.Find(newManager.Key);
-                if (TryUpdateModel(item))
+                Team actualTeam = db.Teams.Find(team.TeamId);
+                if(TryUpdateModel(actualTeam))
                 {
-                    item.UserId = newManager.Value;
-                    item.LastUpdate = DateTime.Now;
+                    actualTeam.UserId = item.newManagerId;
+                    db.SaveChanges();
+                }
+                if(!db.UsersToTeams.ToList().Exists(x => x.UserId == item.newManagerId && x.TeamId == team.TeamId))
+                {
+                    UserToTeam newItem = new UserToTeam()
+                    {
+                        UserId = newManager.Id,
+                        TeamId = team.TeamId
+                    };
+                    db.UsersToTeams.Add(newItem);
                     db.SaveChanges();
                 }
 
-                ApplicationUser user = db.Users.Find(newManager.Value);
-                if (!UserManager.GetRoles(user.Id).Contains("Manager"))
-                    UserManager.AddToRole(currentManagerId, "Manager");
             }
 
-            UserManager.RemoveFromRole(currentManagerId, "Manager");
-            return RedirectToAction("Index");
+            if(!UserManager.GetRoles(newManager.Id).Contains("Manager"))
+                UserManager.AddToRole(newManager.Id, "Manager");
 
+            UserManager.RemoveFromRole(user.Id, "Manager");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Administrator")]
