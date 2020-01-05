@@ -11,6 +11,7 @@ namespace ToDoApp.Controllers
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Logger Log = new Logger(typeof(CommentsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
         [HttpPost]
@@ -23,7 +24,14 @@ namespace ToDoApp.Controllers
                 comment.DateAdded = DateTime.Now;
 
                 db.Comments.Add(comment);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to create comment. Error: " + ex.Message);
+                }
                 return RedirectToAction("Details", "Tasks", new { id = comment.TaskId });
             }
             return RedirectToAction("Details", "Tasks", new { id = comment.TaskId });
@@ -52,22 +60,27 @@ namespace ToDoApp.Controllers
             Comment item = db.Comments.Find(id);
             string currentUserId = User.Identity.GetUserId();
 
-
-
             if (item == null)
                 return RedirectToAction("Index", "Projects");
 
             if (!(User.IsInRole("Administrator") || item.UserId == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
 
                 if (TryUpdateModel(item))
                 {
                     item.Content = comment.Content;
                     item.LastUpdate = DateTime.Now;
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to edit comment. Error: " + ex.Message);
+                    }
                     return RedirectToAction("Details", "Tasks", new { id = item.TaskId });
                 }
             }
@@ -77,10 +90,11 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager,User")]
+        [HttpDelete]
         public ActionResult Delete(int commentId)
         {
             Comment item = db.Comments.Find(commentId);
-            if(item == null)
+            if (item == null)
                 return RedirectToAction("Index", "Projects");
 
             string currentUserId = User.Identity.GetUserId();
@@ -89,8 +103,15 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index", "Projects");
 
             int taskId = item.TaskId;
-            db.Comments.Remove(item);
-            db.SaveChanges();
+            try
+            {
+                db.Comments.Remove(item);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to delete comment. Error: " + ex.Message);
+            }
             return RedirectToAction("Details", "Tasks", new { id = taskId });
         }
 

@@ -14,6 +14,7 @@ namespace ToDoApp.Controllers
     {
 
         private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly Logger Log = new Logger(typeof(TeamsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Index()
@@ -91,10 +92,17 @@ namespace ToDoApp.Controllers
                 UserToTeam userToTeam = new UserToTeam() { TeamId = team.TeamId, UserId = currentUserId };
                 team.LastUpdate = DateTime.Now;
                 team.UserId = User.Identity.GetUserId();
+                try
+                {
+                    db.Teams.Add(team);
+                    db.UsersToTeams.Add(userToTeam);
+                    db.SaveChanges();
+                }
 
-                db.Teams.Add(team);
-                db.UsersToTeams.Add(userToTeam);
-                db.SaveChanges();
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to create team. Error: " + ex.Message);
+                }
                 return RedirectToAction("Details", new { id = team.TeamId });
             }
             return View(team);
@@ -129,7 +137,14 @@ namespace ToDoApp.Controllers
                     if (TryUpdateModel(item))
                     {
                         item.Title = team.Title;
-                        db.SaveChanges();
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error("Failed to edit team. Error: " + ex.Message);
+                        }
                         return RedirectToAction("Index");
                     }
                 }
@@ -139,6 +154,7 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
+        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Team item = db.Teams.Find(id);
@@ -146,8 +162,15 @@ namespace ToDoApp.Controllers
 
             if (User.IsInRole("Administrator") || item.UserId == currentUserId)
             {
-                db.Teams.Remove(item);
-                db.SaveChanges();
+                try
+                {
+                    db.Teams.Remove(item);
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Failed to delete team. Error: " + ex.Message);
+                }
             }
             return RedirectToAction("Index");
         }
@@ -188,8 +211,15 @@ namespace ToDoApp.Controllers
 
                 if (TryUpdateModel(item))
                 {
-                    db.UsersToTeams.Add(item);
-                    db.SaveChanges();
+                    try
+                    {
+                        db.UsersToTeams.Add(item);
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error("Failed to add member to team. Error: " + ex.Message);
+                    }
                     return RedirectToAction("Details", new { id = team.TeamId });
                 }
             }
@@ -200,6 +230,7 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager")]
+        [HttpDelete]
         public ActionResult RemoveMember(int teamId, string memberId)
         {
             Team team;
@@ -213,8 +244,15 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index");
 
             UserToTeam item = db.UsersToTeams.Find(teamId, memberId);
-            db.UsersToTeams.Remove(item);
-            db.SaveChanges();
+            try
+            {
+                db.UsersToTeams.Remove(item);
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to remove member from team. Error: " + ex.Message);
+            }
             return RedirectToAction("Details", new { id = teamId });
         }
 
