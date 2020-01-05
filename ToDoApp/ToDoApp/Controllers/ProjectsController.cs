@@ -180,7 +180,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);

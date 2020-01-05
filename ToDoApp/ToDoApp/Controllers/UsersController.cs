@@ -164,7 +164,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        [HttpDelete]
         public ActionResult Delete(string id)
         {
             ApplicationUser item = db.Users.Find(id);

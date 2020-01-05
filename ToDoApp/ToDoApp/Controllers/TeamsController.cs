@@ -154,7 +154,6 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int id)
         {
             Team item = db.Teams.Find(id);
@@ -232,7 +231,6 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult RemoveMember(int teamId, string memberId)
         {
             Team team;

@@ -90,7 +90,6 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        [HttpDelete]
         public ActionResult Delete(int commentId)
         {
             Comment item = db.Comments.Find(commentId);

@@ -255,7 +255,6 @@ namespace ToDoApp.Controllers
 
 
         [Authorize(Roles = "Administrator,Manager")]
-        [HttpDelete]
         public ActionResult Delete(int taskId)
         {
             string currentUserId = User.Identity.GetUserId();
