@@ -1,5 +1,7 @@
 ﻿@model PagedList.IPagedList<ToDoApp.Models.Task>
 
+@using PagedList;
+@using PagedList.Mvc;
 
 <table class="table">
     <tr>
@@ -7,19 +9,19 @@
             Task Title
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.First().Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.First().Status)
         </th>
         <th>
             AssignedUser
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StartDate)
+            @Html.DisplayNameFor(model => model.First().StartDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EndDate)
+            @Html.DisplayNameFor(model => model.First().EndDate)
         </th>
 
         <th></th>
@@ -70,6 +72,7 @@
     }
 
 </table>
+    @Html.PagedListPager(Model, i => Url.Action("Details","Projects", new { i}))
 
 <style>
     html, body {

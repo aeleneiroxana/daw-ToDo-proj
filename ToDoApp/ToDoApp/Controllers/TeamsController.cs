@@ -19,7 +19,7 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(TeamsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index(int? pageIndex)
+        public ActionResult Index(int? i)
         {
             List<Team> teams;
             if (User.IsInRole("Administrator"))
@@ -34,7 +34,7 @@ namespace ToDoApp.Controllers
                 ViewBag.Teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
                 teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
             }
-            return View(teams.ToPagedList(pageIndex ?? 1, 15));
+            return View(teams.ToPagedList(i ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]

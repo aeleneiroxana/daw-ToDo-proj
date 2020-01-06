@@ -1,16 +1,19 @@
 ﻿@model PagedList.IPagedList<ToDoApp.Models.Comment>
 
+@using PagedList.Mvc;
+@using PagedList;
+
 <h2>Comments</h2>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.User.UserName)
+                @Html.DisplayNameFor(model => model.First().User.UserName)
+            </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Content)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateAdded)
+            @Html.DisplayNameFor(model => model.First().DateAdded)
         </th>
         <th></th>
     </tr>
@@ -31,13 +34,14 @@
                 @if (ViewBag.HasRights || ViewBag.CurrentUserId == item.UserId)
                 {
                     @Html.ActionLink("Edit ", "Edit", "Comments", new { id = item.CommentId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-                    @Html.ActionLink("Delete ", "Delete","Comments", new { commentId = item.CommentId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                    @Html.ActionLink("Delete ", "Delete", "Comments", new { commentId = item.CommentId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
                 }
             </td>
         </tr>
     }
 
 </table>
+@Html.PagedListPager(Model, i => Url.Action("Details", "Tasks", new { i }))
 
 <style>
     html, body {
@@ -55,4 +59,9 @@
     .anotheruser:hover {
         color: #7792bf;
     }
+
+    .active{
+        background-color: #54b86f;
+    }
+
 </style>
