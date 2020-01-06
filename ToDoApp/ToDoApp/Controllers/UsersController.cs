@@ -93,8 +93,9 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index");
 
             List<Team> teams = db.Teams.ToList().FindAll(x => x.UserId == userId);
+            IEnumerable<SelectListItem> allUsers = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != userId));
 
-            if (teams.Count == 0)
+            if (teams.Count == 0 || allUsers.Count() == 0)
             {
                 try
                 {
@@ -107,7 +108,6 @@ namespace ToDoApp.Controllers
                 return RedirectToAction("Index");
             }
 
-            IEnumerable<SelectListItem> allUsers = MembersToSelectList(db.Users.ToList().FindAll(x => x.Id != userId));
             TeamsNewManager item = new TeamsNewManager()
             {
                 formerManagerId = userId,
