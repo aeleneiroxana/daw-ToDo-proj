@@ -19,7 +19,7 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(TasksController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index(int? i)
+        public ActionResult Index(int? pageIndex)
         {
             string currentUserId = User.Identity.GetUserId();
             ViewBag.CurrentUserId = currentUserId;
@@ -28,15 +28,15 @@ namespace ToDoApp.Controllers
             {
                 ViewBag.HasRights = true;
                 IEnumerable<Task> allTasks = db.Tasks.ToList().AsEnumerable();
-                return View(allTasks.ToPagedList(i ?? 1, 15));
+                return View(allTasks.ToPagedList(pageIndex ?? 1, 15));
             }
             ViewBag.HasRights = false;
             IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).AsEnumerable();
-            return View(tasks.ToPagedList(i ?? 1, 15));
+            return View(tasks.ToPagedList(pageIndex ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int? pageIndex)
         {
             string currentUserId = User.Identity.GetUserId();
             ViewBag.CurrentUserId = currentUserId;
@@ -48,7 +48,7 @@ namespace ToDoApp.Controllers
                 ViewBag.HasRights = true;
                 if (item != null)
                 {
-                    ViewBag.TaskComments = item.Comments.ToList();
+                    ViewBag.TaskComments = item.Comments.ToList().ToPagedList(pageIndex ?? 1, 15);
                     ViewBag.NewComment = new Comment()
                     {
                         TaskId = item.TaskId,
@@ -88,7 +88,7 @@ namespace ToDoApp.Controllers
                 UserId = currentUserId
             };
 
-            ViewBag.TaskComments = item.Comments.ToList();
+            ViewBag.TaskComments = item.Comments.ToList().ToPagedList(pageIndex ?? 1, 15); ;
             return View(item);
         }
 

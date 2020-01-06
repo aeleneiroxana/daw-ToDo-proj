@@ -44,7 +44,7 @@
 <br />
 <br />
 <div>
-    @Html.Partial("TeamMembers", (List<ToDoApp.Models.ApplicationUser>)ViewBag.TeamMembers)
+    @Html.Partial("TeamMembers", (PagedList.IPagedList<ToDoApp.Models.ApplicationUser>)ViewBag.TeamMembers)
 </div>
 
 

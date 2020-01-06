@@ -68,7 +68,7 @@
 <br />
 <br />
 <div>
-    @Html.Partial("ProjectTasks", (List<ToDoApp.Models.Task>)ViewBag.ProjectTasks)
+    @Html.Partial("ProjectTasks", (PagedList.IPagedList<ToDoApp.Models.Task>)ViewBag.ProjectTasks)
 </div>
 
 <style>

@@ -19,7 +19,7 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(TeamsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index(int? i)
+        public ActionResult Index(int? pageIndex)
         {
             List<Team> teams;
             if (User.IsInRole("Administrator"))
@@ -34,11 +34,11 @@ namespace ToDoApp.Controllers
                 ViewBag.Teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
                 teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
             }
-            return View(teams.ToPagedList(i ?? 1, 15));
+            return View(teams.ToPagedList(pageIndex ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int? pageIndex)
         {
             Team item = db.Teams.FirstOrDefault(x => x.TeamId == id);
             if (item == null)
@@ -50,9 +50,9 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
-                ViewBag.TeamMembers = (List<ApplicationUser>)db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id));
+                ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(pageIndex ?? 1, 15);
                 if (ViewBag.TeamMembers == null)
-                    ViewBag.TeamMembers = new List<ApplicationUser>();
+                    ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(),1,0);
                 return View(item);
             }
 
@@ -68,9 +68,9 @@ namespace ToDoApp.Controllers
             if (item.UserId != currentUserId && !userTeams.Exists(x => x.UserId == currentUserId))
                 return RedirectToAction("Index");
 
-            ViewBag.TeamMembers = (List<ApplicationUser>)db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id));
+            ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(pageIndex ?? 1, 15); ;
             if (ViewBag.TeamMembers == null)
-                ViewBag.TeamMembers = new List<ApplicationUser>();
+                ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
             return View(item);
         }
 

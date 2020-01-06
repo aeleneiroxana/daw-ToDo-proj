@@ -97,7 +97,7 @@
 }
 <br />
 <div style="margin-top: 10px;">
-    @Html.Partial("TaskComments", (List<ToDoApp.Models.Comment>)ViewBag.TaskComments)
+    @Html.Partial("TaskComments", (PagedList.IPagedList<ToDoApp.Models.Comment>)ViewBag.TaskComments)
 </div>
 
 <br />

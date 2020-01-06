@@ -18,7 +18,7 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(ProjectsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index(int? i)
+        public ActionResult Index(int? pageIndex)
         {
             List<Project> projects;
             if (User.IsInRole("Administrator"))
@@ -39,11 +39,11 @@ namespace ToDoApp.Controllers
                 ViewBag.Projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
                 projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
             }
-            return View(projects.ToPagedList(i ?? 1, 15));
+            return View(projects.ToPagedList(pageIndex ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int? pageIndex)
         {
             ViewBag.CurrentUserId = User.Identity.GetUserId();
             if (User.IsInRole("Administrator"))
@@ -52,7 +52,7 @@ namespace ToDoApp.Controllers
                 Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
                 if (item != null)
                 {
-                    ViewBag.ProjectTasks = item.Tasks.ToList();
+                    ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(pageIndex ?? 1,15);
                     return View(item);
                 }
                 else
@@ -75,7 +75,7 @@ namespace ToDoApp.Controllers
                     ViewBag.HasRights = false;
 
 
-                ViewBag.ProjectTasks = item.Tasks.ToList();
+                ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(pageIndex ?? 1, 15);
                 return View(item);
             }
             else
