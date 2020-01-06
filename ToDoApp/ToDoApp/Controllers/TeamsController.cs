@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using ToDoApp.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace ToDoApp.Controllers
 {
@@ -17,19 +19,22 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(TeamsController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
+            List<Team> teams;
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.Teams = db.Teams.ToList();
+                teams = db.Teams.ToList();
             }
             else
             {
                 string currentUserId = User.Identity.GetUserId();
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
                 ViewBag.Teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
+                teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
             }
-            return View(ViewBag.Teams);
+            return View(teams.ToPagedList(i ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]

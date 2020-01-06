@@ -1,8 +1,11 @@
-﻿@model IEnumerable<ToDoApp.Models.Task>
+﻿@model IPagedList<ToDoApp.Models.Task>
 
 @{
     ViewBag.Title = "Index";
 }
+
+@using PagedList.Mvc;
+@using PagedList;
 
 <div class="dashboard-content">
     <h2 style="text-align:center; display: inline; margin-left: 42%;">Tasks</h2>
@@ -13,13 +16,13 @@
                 Project Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                @Html.DisplayNameFor(model => model.First().Title)
             </th>
             @*<th>
                     @Html.DisplayNameFor(model => model.Description)
                 </th>*@
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.DisplayNameFor(model => model.First().Status)
             </th>
             @if (ViewBag.HasRights)
             {
@@ -28,10 +31,10 @@
                 </th>
             }
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => model.First().StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.First().EndDate)
             </th>
             <th style="border-top: none; border-right: none;  border-bottom: none;"></th>
         </tr>
@@ -93,6 +96,7 @@
         }
 
     </table>
+    @Html.PagedListPager(Model, i=> Url.Action("Index","Tasks", new { i, search = Request.QueryString["search"]}))
 </div>
 
 <style>
@@ -116,9 +120,16 @@
     .dashboard-content {
         width: 90%;
         height: 100%;
-        overflow-y: auto;
+        overflow-y: hidden;
         background-color: #f1f1f1;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
     }
+    
+    .pagination-container{
+        position: absolute;
+        bottom: 1.5%;
+    }
 </style>
+
+

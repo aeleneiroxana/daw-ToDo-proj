@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using ToDoApp.Models;
 using ToDoApp.Models.Enums;
+using PagedList;
+using PagedList.Mvc;
 
 namespace ToDoApp.Controllers
 {
@@ -17,7 +19,7 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(TasksController));
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
             string currentUserId = User.Identity.GetUserId();
             ViewBag.CurrentUserId = currentUserId;
@@ -26,11 +28,11 @@ namespace ToDoApp.Controllers
             {
                 ViewBag.HasRights = true;
                 IEnumerable<Task> allTasks = db.Tasks.ToList().AsEnumerable();
-                return View(allTasks);
+                return View(allTasks.ToPagedList(i ?? 1, 15));
             }
             ViewBag.HasRights = false;
             IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).AsEnumerable();
-            return View(tasks);
+            return View(tasks.ToPagedList(i ?? 1, 15));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]

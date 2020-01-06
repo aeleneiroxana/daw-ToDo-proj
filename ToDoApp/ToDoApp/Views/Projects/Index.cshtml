@@ -1,6 +1,10 @@
-﻿@{
+﻿@model IPagedList<ToDoApp.Models.Project>
+@{
     ViewBag.Title = "Index";
 }
+@using PagedList;
+@using PagedList.Mvc;
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div class="dashboard-content">
     <h2 style="text-align:center; display: inline; margin-left: 42%;">Projects</h2>
@@ -16,17 +20,33 @@
         </tr>
 
 
-        @foreach (var project in ViewBag.Projects)
+        @*@foreach (var project in ViewBag.Projects)
+            {
+                <tr>
+                    <td>@project.Title</td>
+                    <td>@project.Team.User.UserName</td>
+                    <td>@project.Team.Title</td>
+                    <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Details", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                </tr>
+            }*@
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@project.Title</td>
-                <td>@project.Team.User.UserName</td>
-                <td>@project.Team.Title</td>
-                <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Details", "Projects", new { id = project.ProjectId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Team.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Team.Title)
+                </td>
+                <td style="border: none; text-align: center; width: 180px"> @Html.ActionLink("details", "Details", "Projects", new { id = item.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })</td>
             </tr>
         }
 
     </table>
+    @Html.PagedListPager(Model, i => Url.Action("Index", "Projects", new { i }))
 
 </div>
 
@@ -55,5 +75,10 @@
         background-color: #f1f1f1;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+    }
+
+    .pagination-container{
+        position: absolute;
+        bottom: 1.5%;
     }
 </style>
