@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<ToDoApp.Models.Task>
+@{
     ViewBag.Title = "Dashboard";
 }
 
@@ -9,32 +10,37 @@
             <hr style="color: black;" />
         </div>
         <div class="left-content-content">
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 20</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 14</p>
-                <p style="color: white; font-size: 13.5px">Start date: 20.10.2014</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 40</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 22</p>
-                <p style="color: white; font-size: 13.5px">Start date: 22.02.1990</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 31</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 1</p>
-                <p style="color: white; font-size: 13.5px">Start date: 9.011.2001</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 4</h4>
-                <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 5</h4>
-                <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
-            </div>
+             @foreach (var item in ViewBag.InProgressTasks)
+             {
+                  <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                      <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                      <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
+                      <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
+                  </div>
+             }
+            @*<div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+            <h4 style="color:white; text-align:center;">Project 20</h4>
+            <p style="color: white; font-size: 13.5px;">Task name: task 14</p>
+            <p style="color: white; font-size: 13.5px">Start date: 20.10.2014</p>
+        </div>
+        <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+            <h4 style="color:white; text-align:center;">Project 40</h4>
+            <p style="color: white; font-size: 13.5px;">Task name: task 22</p>
+            <p style="color: white; font-size: 13.5px">Start date: 22.02.1990</p>
+        </div>
+        <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+            <h4 style="color:white; text-align:center;">Project 31</h4>
+            <p style="color: white; font-size: 13.5px;">Task name: task 1</p>
+            <p style="color: white; font-size: 13.5px">Start date: 9.011.2001</p>
+        </div>
+        <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+            <h4 style="color:white; text-align:center;">Project 4</h4>
+            <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
+        </div>
+        <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+            <h4 style="color:white; text-align:center;">Project 5</h4>
+            <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
+        </div>*@
         </div>
     </div>
 
@@ -44,32 +50,14 @@
             <hr />
         </div>
         <div class="middle-content-content">
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 14</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 15</p>
-                <p style="color: white; font-size: 13.5px">Start date: 20.01.2015</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 1</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 10</p>
-                <p style="color: white; font-size: 13.5px">Start date: 22.04.2017</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 26</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 2</p>
-                <p style="color: white; font-size: 13.5px">Start date: 14.01.2020</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 4</h4>
-                <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 5</h4>
-                <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
-            </div>
+            @foreach (var item in ViewBag.NotStartedTasks)
+            {
+                <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                    <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                    <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
+                    <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
+                </div>
+            }
         </div>
     </div>
 
@@ -79,34 +67,14 @@
             <hr />
         </div>
         <div class="right-content-content">
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 4</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 1</p>
-                <p style="color: white; font-size: 13.5px">Start date: 13.10.2018</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 4</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 2</p>
-                <p style="color: white; font-size: 13.5px">Start date: 27.07.1999</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 3</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: task 3</p>
-                <p style="color: white; font-size: 13.5px">Start date: 14.01.2020</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 4</h4>
-                <p style="color: white; font-size: 13.5px;">Task name: 'a' task 1</p>
-                <p style="color: white; font-size: 13.5px">Start date: 'a' StartDate</p>
-                @*<p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>*@
-            </div>
-            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                <h4 style="color:white; text-align:center;">Project 5</h4>
-                <p style="color:white; font-size:12px; margin-left:5px;">sdsads gsdaaaaa aaaaaf fdssssadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaasss fsd gdf gsfsd fyug ewufy sdkjgv fsdau fuysgu fewg fug sdjfds ghfu ewy sdgfjksh dfksdif yugsa iofdsio fuysg fsdhfoiueg f</p>
-            </div>
+            @foreach (var item in ViewBag.CompletedTasks)
+            {
+                <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                    <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                    <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
+                    <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
+                </div>
+            }
         </div>
     </div>
 </div>

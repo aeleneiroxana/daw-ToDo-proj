@@ -1,6 +1,8 @@
 ﻿@model PagedList.IPagedList<ToDoApp.Models.ApplicationUser>
 
 <h4>Team Members</h4>
+@using PagedList.Mvc;
+@using PagedList;
 
 <table class="table">
     <tr>
@@ -27,6 +29,7 @@
     }
 
 </table>
+@Html.PagedListPager(Model, i => Url.Action("Details", "Teams", new {i }))
 
 <style>
     html, body {

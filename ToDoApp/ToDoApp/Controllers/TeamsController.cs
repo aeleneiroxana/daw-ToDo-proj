@@ -38,7 +38,7 @@ namespace ToDoApp.Controllers
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
-        public ActionResult Details(int id, int? pageIndex)
+        public ActionResult Details(int id, int? i)
         {
             Team item = db.Teams.FirstOrDefault(x => x.TeamId == id);
             if (item == null)
@@ -50,7 +50,7 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
-                ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(pageIndex ?? 1, 15);
+                ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(i ?? 1, 5);
                 if (ViewBag.TeamMembers == null)
                     ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
                 return View(item);
@@ -68,7 +68,7 @@ namespace ToDoApp.Controllers
             if (item.UserId != currentUserId && !userTeams.Exists(x => x.UserId == currentUserId))
                 return RedirectToAction("Index");
 
-            ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(pageIndex ?? 1, 15); ;
+            ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(i ?? 1, 5); ;
             if (ViewBag.TeamMembers == null)
                 ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
             return View(item);
