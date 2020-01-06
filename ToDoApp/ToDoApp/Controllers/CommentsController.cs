@@ -80,7 +80,7 @@ namespace ToDoApp.Controllers
                     catch (Exception ex)
                     {
                         Log.Error("Failed to edit comment. Error: " + ex.Message);
-                    }
+                        }
                     return RedirectToAction("Details", "Tasks", new { id = item.TaskId });
                 }
             }

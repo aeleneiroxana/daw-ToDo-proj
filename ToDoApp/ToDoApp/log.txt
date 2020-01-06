@@ -1,0 +1,7 @@
+2020-01-06 11:04:50.7952 | ERROR | ToDoApp.Controllers.TeamsController - Failed to create team. Error: An error occurred while updating the entries. See the inner exception for details.
+2020-01-06 11:07:41.8490 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to create project. Error: An error occurred while updating the entries. See the inner exception for details.
+2020-01-06 11:11:48.1316 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to create project. Error: An error occurred while updating the entries. See the inner exception for details.. Type of inner exception: System.Data.Entity.Core.UpdateException
+2020-01-06 11:13:55.2474 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to create project. Error: An error occurred while updating the entries. See the inner exception for details.
+2020-01-06 11:13:55.2523 | ERROR | ToDoApp.Controllers.ProjectsController - inner inner exception: System.Data.SqlClient.SqlException
+2020-01-06 11:19:06.2667 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to create project. Error: An error occurred while updating the entries. See the inner exception for details.
+2020-01-06 11:21:27.2501 | ERROR | ToDoApp.Controllers.TeamsController - Failed to create team. Error: An error occurred while updating the entries. See the inner exception for details.

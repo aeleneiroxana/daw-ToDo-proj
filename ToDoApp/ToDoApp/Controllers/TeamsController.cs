@@ -52,7 +52,7 @@ namespace ToDoApp.Controllers
                 ViewBag.HasRights = true;
                 ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(pageIndex ?? 1, 15);
                 if (ViewBag.TeamMembers == null)
-                    ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(),1,0);
+                    ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
                 return View(item);
             }
 
@@ -102,13 +102,15 @@ namespace ToDoApp.Controllers
                     db.Teams.Add(team);
                     db.UsersToTeams.Add(userToTeam);
                     db.SaveChanges();
+                    return RedirectToAction("Details", new { id = team.TeamId });
                 }
 
                 catch (Exception ex)
                 {
                     Log.Error("Failed to create team. Error: " + ex.Message);
+                    ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
+
                 }
-                return RedirectToAction("Details", new { id = team.TeamId });
             }
             return View(team);
         }
@@ -145,12 +147,14 @@ namespace ToDoApp.Controllers
                         try
                         {
                             db.SaveChanges();
+                            return RedirectToAction("Index");
                         }
                         catch (Exception ex)
                         {
                             Log.Error("Failed to edit team. Error: " + ex.Message);
+                            ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
+
                         }
-                        return RedirectToAction("Index");
                     }
                 }
                 return View(team);

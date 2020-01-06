@@ -114,12 +114,14 @@ namespace ToDoApp.Controllers
                 {
                     db.Projects.Add(project);
                     db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
                     Log.Error("Failed to create project. Error: " + ex.Message);
+                    ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
+
                 }
-                return RedirectToAction("Index");
             }
             if (User.IsInRole("Administrator"))
             {
@@ -170,13 +172,15 @@ namespace ToDoApp.Controllers
                         try
                         {
                             db.SaveChanges();
+                            return RedirectToAction("Index");
                         }
 
                         catch (Exception ex)
                         {
                             Log.Error("Failed to edit project. Error: " + ex.Message);
+                            ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
+
                         }
-                        return RedirectToAction("Index");
                     }
                 }
                 return View(project);
