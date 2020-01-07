@@ -130,6 +130,11 @@ namespace ToDoApp.Controllers
 
             if (ModelState.IsValid)
             {
+                if (item.StartDate != null && item.EndDate != null && item.StartDate > item.EndDate)
+                {
+                    ModelState.AddModelError("EndDate", "End date cannot be before start date!");
+                }
+                else
                 if (TryUpdateModel(item))
                 {
                     item.LastUpdate = DateTime.Now;
@@ -217,7 +222,11 @@ namespace ToDoApp.Controllers
                     if (task.Status == TaskStatus.Completed && task.EndDate == null)
                         task.EndDate = DateTime.Now;
                 }
-
+                if (task.StartDate != null && task.EndDate != null && task.StartDate > task.EndDate)
+                {
+                    ModelState.AddModelError("EndDate", "End date cannot be before start date!");
+                }
+                else
                 if (TryUpdateModel(item))
                 {
                     item.AssignedUserId = task.AssignedUserId;
