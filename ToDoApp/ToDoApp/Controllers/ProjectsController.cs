@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ToDoApp.Models;
-using PagedList;
-using PagedList.Mvc;
 
 namespace ToDoApp.Controllers
 {
@@ -50,7 +46,7 @@ namespace ToDoApp.Controllers
                 Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
                 if (item != null)
                 {
-                    ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1,5).OrderBy(x => x.Title).ToList();
+                    ViewBag.ProjectTasks = item.Tasks.ToList().OrderBy(x => x.Title).ToPagedList(i ?? 1, 5);
                     return View(item);
                 }
                 else
@@ -73,7 +69,7 @@ namespace ToDoApp.Controllers
                     ViewBag.HasRights = false;
 
 
-                ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1, 5).OrderBy(x => x.Title).ToList();
+                ViewBag.ProjectTasks = item.Tasks.ToList().OrderBy(x => x.Title).ToPagedList(i ?? 1, 5);
                 return View(item);
             }
             else
