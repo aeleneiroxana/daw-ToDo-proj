@@ -28,11 +28,11 @@ namespace ToDoApp.Controllers
             {
                 ViewBag.HasRights = true;
                 IEnumerable<Task> allTasks = db.Tasks.ToList().OrderBy(x => x.Title);
-                return View(allTasks.ToPagedList(i ?? 1, 15));
+                return View(allTasks.ToPagedList(i ?? 1, 10));
             }
             ViewBag.HasRights = false;
             IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).OrderBy(x => x.Title);
-            return View(tasks.ToPagedList(i ?? 1, 15));
+            return View(tasks.ToPagedList(i ?? 1, 10));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]

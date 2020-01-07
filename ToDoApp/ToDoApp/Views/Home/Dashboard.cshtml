@@ -12,11 +12,12 @@
         <div class="left-content-content">
              @foreach (var item in ViewBag.InProgressTasks)
              {
-                  <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                      <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
-                      <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
-                      <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
-                  </div>
+            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                <p style="color: white; font-size: 12.5px;">Task name: task @item.Title</p>
+                <p style="color: white; font-size: 12.5px">Start date: @item.StartDate</p>
+                <p style="color: white; font-size: 12.5px">End date: @item.EndDate</p>
+            </div>
              }
             @*<div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
             <h4 style="color:white; text-align:center;">Project 20</h4>
@@ -52,11 +53,12 @@
         <div class="middle-content-content">
             @foreach (var item in ViewBag.NotStartedTasks)
             {
-                <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                    <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
-                    <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
-                    <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
-                </div>
+            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                <p style="color: white; font-size: 12.5px;">Task name: task @item.Title</p>
+                <p style="color: white; font-size: 12.5px">Start date: @item.StartDate</p>
+                <p style="color: white; font-size: 12.5px">End date: @item.EndDate</p>
+            </div>
             }
         </div>
     </div>
@@ -69,11 +71,12 @@
         <div class="right-content-content">
             @foreach (var item in ViewBag.CompletedTasks)
             {
-                <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
-                    <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
-                    <p style="color: white; font-size: 13.5px;">Task name: task @item.Title</p>
-                    <p style="color: white; font-size: 13.5px">Start date: @item.StartDate</p>
-                </div>
+            <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+                <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
+                <p style="color: white; font-size: 12.5px;">Task name: task @item.Title</p>
+                <p style="color: white; font-size: 12.5px">Start date: @item.StartDate</p>
+                <p style="color: white; font-size: 12.5px">End date: @item.EndDate</p>
+            </div>
             }
         </div>
     </div>

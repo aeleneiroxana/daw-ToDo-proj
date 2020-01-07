@@ -5,7 +5,9 @@
 }
 
 <h2>Change User Role</h2>
-<ul>
+<hr />
+<br />
+<ul style="list-style-type: none;">
     @{
         List<SelectListItem> roles = ViewBag.CurrentRoles;
         List<SelectListItem> allRoles = ViewBag.AllRoles;
@@ -14,13 +16,13 @@
             if (roles.Exists(x => x.Value == role.Value))
             {
                 <li>
-                    @Html.ActionLink("Remove " + role.Text + " role ", "RemoveRole", new { userId = Model.Id, roleId = role.Value })
+                    @Html.ActionLink("Remove " + role.Text + " role ", "RemoveRole", new { userId = Model.Id, roleId = role.Value }, new { Style ="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
                 </li>
             }
             else
             {
                 <li>
-                    @Html.ActionLink("Add " + role.Text + " role ", "AddRole", new { userId = Model.Id, roleId = role.Value })
+                    @Html.ActionLink("Add " + role.Text + " role ", "AddRole", new { userId = Model.Id, roleId = role.Value }, new { Style ="color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
                 </li>
             }
         }

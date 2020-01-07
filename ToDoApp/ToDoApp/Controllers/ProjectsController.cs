@@ -33,7 +33,7 @@ namespace ToDoApp.Controllers
 
                 projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId)).OrderBy(x => x.Title).ToList();
             }
-            return View(projects.ToPagedList(i ?? 1, 15));
+            return View(projects.ToPagedList(i ?? 1, 10));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]

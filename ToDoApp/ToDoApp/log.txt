@@ -13,3 +13,4 @@
 2020-01-07 12:33:37.2980 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to edit project. Error: An error occurred while updating the entries. See the inner exception for details.
 2020-01-07 12:33:42.2487 | ERROR | ToDoApp.Controllers.ProjectsController - Failed to edit project. Error: An error occurred while updating the entries. See the inner exception for details.
 2020-01-07 07:57:58.1000 | ERROR | ToDoApp.Controllers.TeamsController - Failed to create team. Error: An error occurred while updating the entries. See the inner exception for details.
+2020-01-07 05:10:39.1951 | ERROR | ToDoApp.Controllers.TeamsController - Failed to edit team. Error: An error occurred while updating the entries. See the inner exception for details.

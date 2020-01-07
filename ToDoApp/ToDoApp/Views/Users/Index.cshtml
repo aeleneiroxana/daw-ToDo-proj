@@ -1,8 +1,11 @@
-﻿@model IEnumerable<ToDoApp.Models.ApplicationUser>
+﻿@model IPagedList<ToDoApp.Models.ApplicationUser>
 
 @{
     ViewBag.Title = "Index";
 }
+@using PagedList;
+@using PagedList.Mvc;
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div class="dashboard-content">
     <h2 style="text-align:center; display: inline; margin-left: 42%;">Users</h2>
@@ -10,10 +13,10 @@
     <table style="width:100%; margin-top: 1%; border-bottom: none; border-right: none; border-top:none;">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                @Html.DisplayNameFor(model => model.First().Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                @Html.DisplayNameFor(model => model.First().UserName)
             </th>
             <th style="border: none; text-align: center; width: 180px"></th>
         </tr>
@@ -36,6 +39,7 @@
         }
 
     </table>
+    @Html.PagedListPager(Model, i => @Url.Action("Index","Users",new { i }))
 </div>
 
 <style>
@@ -65,5 +69,10 @@
         background-color: #f1f1f1;
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
+    }
+
+    .pagination-container{
+        position: absolute;
+        bottom: 1.5%;
     }
 </style>

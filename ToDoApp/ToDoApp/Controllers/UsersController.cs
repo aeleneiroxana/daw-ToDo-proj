@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ToDoApp.Models;
+using PagedList;
+using PagedList.Mvc;
 
 
 namespace ToDoApp.Controllers
@@ -17,10 +19,10 @@ namespace ToDoApp.Controllers
         private readonly Logger Log = new Logger(typeof(UsersController));
 
         [Authorize(Roles = "Administrator")]
-        public ActionResult Index()
+        public ActionResult Index(int? i)
         {
             List<ApplicationUser> users = db.Users.OrderBy(x => x.UserName).ToList();
-            return View(users);
+            return View(users.ToPagedList(i ?? 1, 10));
         }
 
         [Authorize(Roles = "Administrator")]

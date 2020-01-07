@@ -32,7 +32,7 @@ namespace ToDoApp.Controllers
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
                 teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)).OrderBy(x => x.Title).ToList();
             }
-            return View(teams.ToPagedList(i ?? 1, 15));
+            return View(teams.ToPagedList(i ?? 1, 10));
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
