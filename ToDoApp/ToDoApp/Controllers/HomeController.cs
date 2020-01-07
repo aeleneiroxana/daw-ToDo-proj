@@ -27,9 +27,9 @@ namespace ToDoApp.Controllers
 
             
             List<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId);
-            ViewBag.InProgressTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.InProgress);
-            ViewBag.NotStartedTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.NotStarted);
-            ViewBag.CompletedTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.Completed);
+            ViewBag.InProgressTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.InProgress).OrderBy(x => x.Title).ToList();
+            ViewBag.NotStartedTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.NotStarted).OrderBy(x => x.Title).ToList();
+            ViewBag.CompletedTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.Completed).OrderBy(x => x.Title).ToList();
             return View();
         }
 

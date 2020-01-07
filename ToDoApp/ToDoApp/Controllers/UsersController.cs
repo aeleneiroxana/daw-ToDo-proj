@@ -19,7 +19,7 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            List<ApplicationUser> users = db.Users.ToList();
+            List<ApplicationUser> users = db.Users.OrderBy(x => x.UserName).ToList();
             return View(users);
         }
 

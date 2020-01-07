@@ -27,11 +27,11 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
-                IEnumerable<Task> allTasks = db.Tasks.ToList().AsEnumerable();
+                IEnumerable<Task> allTasks = db.Tasks.ToList().OrderBy(x => x.Title);
                 return View(allTasks.ToPagedList(i ?? 1, 15));
             }
             ViewBag.HasRights = false;
-            IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).AsEnumerable();
+            IEnumerable<Task> tasks = db.Tasks.ToList().FindAll(x => x.AssignedUserId == currentUserId).OrderBy(x => x.Title);
             return View(tasks.ToPagedList(i ?? 1, 15));
         }
 
@@ -48,7 +48,7 @@ namespace ToDoApp.Controllers
                 ViewBag.HasRights = true;
                 if (item != null)
                 {
-                    ViewBag.TaskComments = item.Comments.ToList().ToPagedList(i ?? 1, 5);
+                    ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
                     ViewBag.NewComment = new Comment()
                     {
                         TaskId = item.TaskId,
@@ -88,7 +88,7 @@ namespace ToDoApp.Controllers
                 UserId = currentUserId
             };
 
-            ViewBag.TaskComments = item.Comments.ToList().ToPagedList(i ?? 1, 5); ;
+            ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5); ;
             return View(item);
         }
 

@@ -24,15 +24,13 @@ namespace ToDoApp.Controllers
             List<Team> teams;
             if (User.IsInRole("Administrator"))
             {
-                ViewBag.Teams = db.Teams.ToList();
-                teams = db.Teams.ToList();
+                teams = db.Teams.ToList().OrderBy(x => x.Title).ToList();
             }
             else
             {
                 string currentUserId = User.Identity.GetUserId();
                 List<UserToTeam> userTeams = db.UsersToTeams.ToList().FindAll(x => x.UserId == currentUserId);
-                ViewBag.Teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
-                teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId));
+                teams = db.Teams.ToList().FindAll(x => userTeams.Exists(y => y.TeamId == x.TeamId)).OrderBy(x => x.Title).ToList();
             }
             return View(teams.ToPagedList(i ?? 1, 15));
         }
@@ -50,7 +48,7 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
-                ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(i ?? 1, 5);
+                ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).OrderBy(x => x.UserName).ToPagedList(i ?? 1, 5);
                 if (ViewBag.TeamMembers == null)
                     ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
                 return View(item);
@@ -68,7 +66,7 @@ namespace ToDoApp.Controllers
             if (item.UserId != currentUserId && !userTeams.Exists(x => x.UserId == currentUserId))
                 return RedirectToAction("Index");
 
-            ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).ToPagedList(i ?? 1, 5); ;
+            ViewBag.TeamMembers = db.Users.ToList().FindAll(x => userTeams.Exists(y => y.UserId == x.Id)).OrderBy(x => x.UserName).ToPagedList(i ?? 1, 5); ;
             if (ViewBag.TeamMembers == null)
                 ViewBag.TeamMembers = new PagedList<ApplicationUser>(new List<ApplicationUser>(), 1, 0);
             return View(item);

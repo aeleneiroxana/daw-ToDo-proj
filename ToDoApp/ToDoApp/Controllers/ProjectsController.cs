@@ -24,8 +24,7 @@ namespace ToDoApp.Controllers
             if (User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
-                ViewBag.Projects = db.Projects.ToList();
-                projects = db.Projects.ToList(); ;
+                projects = db.Projects.ToList().OrderBy(x => x.Title).ToList();
             }
             else
             {
@@ -36,8 +35,7 @@ namespace ToDoApp.Controllers
                 string currentUserId = User.Identity.GetUserId();
                 List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
 
-                ViewBag.Projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
-                projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
+                projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId)).OrderBy(x => x.Title).ToList();
             }
             return View(projects.ToPagedList(i ?? 1, 15));
         }
@@ -52,7 +50,7 @@ namespace ToDoApp.Controllers
                 Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
                 if (item != null)
                 {
-                    ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1,5);
+                    ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1,5).OrderBy(x => x.Title).ToList();
                     return View(item);
                 }
                 else
@@ -75,7 +73,7 @@ namespace ToDoApp.Controllers
                     ViewBag.HasRights = false;
 
 
-                ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1, 5);
+                ViewBag.ProjectTasks = item.Tasks.ToList().ToPagedList(i ?? 1, 5).OrderBy(x => x.Title).ToList();
                 return View(item);
             }
             else
