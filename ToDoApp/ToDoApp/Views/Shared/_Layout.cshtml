@@ -7,7 +7,6 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,7 +28,6 @@
         </div>
     </div>
 
-
     <div style="height:97%;">
         <div class="sidebar">
             <a class="active" href="@Url.Action("Index", "Dashboard")"><i class="fa fa-fw fa-home" style="font-size:25px;"></i></a>
@@ -43,7 +41,6 @@
         </div>
         <div class="container body-content" style="padding-left:80px;">
             @RenderBody()
-
         </div>
     </div>
 

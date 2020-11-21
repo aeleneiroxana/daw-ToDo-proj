@@ -1,15 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using PagedList;
 using ToDoApp.Models;
 using ToDoApp.Models.Enums;
-using PagedList;
-using PagedList.Mvc;
 
 namespace ToDoApp.Controllers
 {
@@ -24,7 +20,7 @@ namespace ToDoApp.Controllers
             string currentUserId = User.Identity.GetUserId();
             ViewBag.CurrentUserId = currentUserId;
 
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
                 IEnumerable<Task> allTasks = db.Tasks.ToList().OrderBy(x => x.Title);
@@ -42,11 +38,11 @@ namespace ToDoApp.Controllers
             ViewBag.CurrentUserId = currentUserId;
             Task item = db.Tasks.FirstOrDefault(x => x.TaskId == id);
 
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.HasTaskRights = true;
                 ViewBag.HasRights = true;
-                if (item != null)
+                if(item != null)
                 {
                     ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
                     ViewBag.NewComment = new Comment()
@@ -64,14 +60,14 @@ namespace ToDoApp.Controllers
                 ViewBag.HasRights = false;
                 ViewBag.HasTaskRights = false;
             }
-            if (item == null)
+            if(item == null)
                 return RedirectToAction("Index", "Projects");
 
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
-            if (project == null)
+            if(project == null)
                 return RedirectToAction("Index", "Projects");
 
-            if (project.Team.UserId == currentUserId)
+            if(project.Team.UserId == currentUserId)
                 ViewBag.HasTaskRights = true;
 
             ViewBag.CurrentUserId = currentUserId;
@@ -79,7 +75,7 @@ namespace ToDoApp.Controllers
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
             List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
 
-            if (!members.Exists(x => x.Value == currentUserId))
+            if(!members.Exists(x => x.Value == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
             ViewBag.NewComment = new Comment()
@@ -88,7 +84,8 @@ namespace ToDoApp.Controllers
                 UserId = currentUserId
             };
 
-            ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5); ;
+            ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
+            ;
             return View(item);
         }
 
@@ -97,11 +94,11 @@ namespace ToDoApp.Controllers
         {
             Project project;
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId);
             else
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == projectId && x.Team.UserId == currentUserId);
-            if (project == null)
+            if(project == null)
                 return RedirectToAction("Index", "Projects");
 
             Task task = new Task()
@@ -121,26 +118,26 @@ namespace ToDoApp.Controllers
         {
             Project project;
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
             else
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId && x.Team.UserId == currentUserId);
-            if (project == null)
+            if(project == null)
                 return RedirectToAction("Index", "Projects");
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                if (item.StartDate != null && item.EndDate != null && item.StartDate > item.EndDate)
+                if(item.StartDate != null && item.EndDate != null && item.StartDate > item.EndDate)
                 {
                     ModelState.AddModelError("EndDate", "End date cannot be before start date!");
                 }
                 else
-                if (TryUpdateModel(item))
+                if(TryUpdateModel(item))
                 {
                     item.LastUpdate = DateTime.Now;
-                    if (item.Status == TaskStatus.InProgress && item.StartDate == null)
+                    if(item.Status == TaskStatus.InProgress && item.StartDate == null)
                         item.StartDate = DateTime.Now;
-                    if (item.Status == TaskStatus.Completed && item.EndDate == null)
+                    if(item.Status == TaskStatus.Completed && item.EndDate == null)
                         item.EndDate = DateTime.Now;
 
                     try
@@ -149,7 +146,7 @@ namespace ToDoApp.Controllers
                         db.SaveChanges();
                     }
 
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         Log.Error("Failed to create task. Error: " + ex.Message);
                     }
@@ -160,26 +157,25 @@ namespace ToDoApp.Controllers
             ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
 
             return View(item);
-
         }
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Edit(int id)
         {
             Task task = db.Tasks.FirstOrDefault(x => x.TaskId == id);
-            if (task == null)
+            if(task == null)
                 return RedirectToAction("Index", "Projects");
 
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == task.ProjectId);
-            if (project == null)
+            if(project == null)
                 return RedirectToAction("Index", "Projects");
 
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
+            if(User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
                 ViewBag.HasRights = true;
             else
             {
-                if (task.AssignedUserId == currentUserId)
+                if(task.AssignedUserId == currentUserId)
                     ViewBag.HasRights = false;
                 else
                     return RedirectToAction("Index", "Projects");
@@ -187,7 +183,7 @@ namespace ToDoApp.Controllers
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
             ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
 
-            if (task != null)
+            if(task != null)
                 return View(task);
 
             return RedirectToAction("Index", "Projects");
@@ -197,37 +193,36 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Edit(int id, Task task)
         {
-
             Task item = db.Tasks.Find(id);
             string currentUserId = User.Identity.GetUserId();
 
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
 
-            if (item == null || project == null)
+            if(item == null || project == null)
                 return RedirectToAction("Index", "Projects");
 
-            if (!(User.IsInRole("Administrator") || project.Team.UserId == currentUserId || item.AssignedUserId == currentUserId))
+            if(!(User.IsInRole("Administrator") || project.Team.UserId == currentUserId || item.AssignedUserId == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                if (item.Status == TaskStatus.NotStarted)
+                if(item.Status == TaskStatus.NotStarted)
                 {
-                    if (task.Status == TaskStatus.InProgress && task.StartDate == null)
+                    if(task.Status == TaskStatus.InProgress && task.StartDate == null)
                         task.StartDate = DateTime.Now;
                 }
 
-                if (item.Status != TaskStatus.Completed)
+                if(item.Status != TaskStatus.Completed)
                 {
-                    if (task.Status == TaskStatus.Completed && task.EndDate == null)
+                    if(task.Status == TaskStatus.Completed && task.EndDate == null)
                         task.EndDate = DateTime.Now;
                 }
-                if (task.StartDate != null && task.EndDate != null && task.StartDate > task.EndDate)
+                if(task.StartDate != null && task.EndDate != null && task.StartDate > task.EndDate)
                 {
                     ModelState.AddModelError("EndDate", "End date cannot be before start date!");
                 }
                 else
-                if (TryUpdateModel(item))
+                if(TryUpdateModel(item))
                 {
                     item.AssignedUserId = task.AssignedUserId;
                     item.Description = task.Description;
@@ -241,18 +236,18 @@ namespace ToDoApp.Controllers
                         db.SaveChanges();
                     }
 
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         Log.Error("Failed to edit task. Error: " + ex.Message);
                     }
                     return RedirectToAction("Details", "Projects", new { id = item.ProjectId });
                 }
             }
-            if (User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
+            if(User.IsInRole("Administrator") || project.Team.UserId == currentUserId)
                 ViewBag.HasRights = true;
             else
             {
-                if (task.AssignedUserId == currentUserId)
+                if(task.AssignedUserId == currentUserId)
                     ViewBag.HasRights = false;
                 else
                     return RedirectToAction("Index", "Projects");
@@ -261,9 +256,7 @@ namespace ToDoApp.Controllers
             ViewBag.TeamMembers = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id)));
 
             return View(task);
-
         }
-
 
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Delete(int taskId)
@@ -271,11 +264,11 @@ namespace ToDoApp.Controllers
             string currentUserId = User.Identity.GetUserId();
 
             Task task;
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
                 task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId);
             else
                 task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId && x.Project.Team.UserId == currentUserId);
-            if (task == null)
+            if(task == null)
                 return RedirectToAction("Index", "Projects");
 
             int projectId = task.ProjectId;
@@ -284,7 +277,7 @@ namespace ToDoApp.Controllers
                 db.Tasks.Remove(task);
                 db.SaveChanges();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Log.Error("Failed to delete task. Error: " + ex.Message);
             }
@@ -301,7 +294,7 @@ namespace ToDoApp.Controllers
 
             List<SelectListItem> partialSelectList = new List<SelectListItem>();
 
-            foreach (var user in users)
+            foreach(var user in users)
             {
                 partialSelectList.Add(new SelectListItem
                 {

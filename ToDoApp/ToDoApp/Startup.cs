@@ -5,6 +5,7 @@ using Owin;
 using ToDoApp.Models;
 
 [assembly: OwinStartupAttribute(typeof(ToDoApp.Startup))]
+
 namespace ToDoApp
 {
     public partial class Startup
@@ -25,7 +26,7 @@ namespace ToDoApp
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            if (!roleManager.RoleExists("Administrator"))
+            if(!roleManager.RoleExists("Administrator"))
             {
                 IdentityRole role = new IdentityRole
                 {
@@ -39,12 +40,12 @@ namespace ToDoApp
                     Email = "admin@admin.com"
                 };
                 IdentityResult adminCreated = UserManager.Create(user, "Administrator1!");
-                if (adminCreated.Succeeded)
+                if(adminCreated.Succeeded)
                 {
                     UserManager.AddToRole(user.Id, "Administrator");
                 }
             }
-            if (!roleManager.RoleExists("Manager"))
+            if(!roleManager.RoleExists("Manager"))
             {
                 IdentityRole role = new IdentityRole
                 {
@@ -52,7 +53,7 @@ namespace ToDoApp
                 };
                 roleManager.Create(role);
             }
-            if (!roleManager.RoleExists("User"))
+            if(!roleManager.RoleExists("User"))
             {
                 IdentityRole role = new IdentityRole
                 {

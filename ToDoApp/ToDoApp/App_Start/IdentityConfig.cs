@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -79,7 +75,7 @@ namespace ToDoApp
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
+            if(dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
@@ -113,6 +109,7 @@ namespace ToDoApp
         base(store)
         {
         }
+
         public static ApplicationRoleManager
         Create(IdentityFactoryOptions<ApplicationRoleManager> options,
         IOwinContext context)

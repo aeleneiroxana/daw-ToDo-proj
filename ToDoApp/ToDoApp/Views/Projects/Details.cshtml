@@ -41,7 +41,6 @@
             @Html.DisplayFor(model => model.Team.Title)
         </dd>
 
-
         <dt style="text-align:left; margin-bottom:10px;">
             @Html.DisplayNameFor(model => model.LastUpdate)
         </dt>
@@ -55,11 +54,10 @@
     @if (ViewBag.HasRights)
     {
         @Html.ActionLink("Edit ", "Edit", new { id = Model.ProjectId }, new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-        
+
         @Html.ActionLink("Delete ", "Delete", new { id = Model.ProjectId }, new { Style = "margin-right: 5px; color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-        
+
         @Html.ActionLink("Add task ", "Create", "Tasks", routeValues: new { projectId = Model.ProjectId }, htmlAttributes: new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-        
 
     }
 </div>

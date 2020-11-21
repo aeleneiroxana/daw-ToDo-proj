@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace ToDoApp.Models
 {
@@ -15,7 +12,7 @@ namespace ToDoApp.Models
 
         [Required]
         [MaxLength(50)]
-        [Index(IsUnique=true)]
+        [Index(IsUnique = true)]
         public string Title { get; set; }
 
         //[Required]
