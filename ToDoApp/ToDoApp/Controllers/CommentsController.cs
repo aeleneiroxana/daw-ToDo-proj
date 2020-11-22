@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
@@ -17,8 +15,7 @@ namespace ToDoApp.Controllers
         [HttpPost]
         public ActionResult Create(Comment comment)
         {
-
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 comment.LastUpdate = DateTime.Now;
                 comment.DateAdded = DateTime.Now;
@@ -28,7 +25,7 @@ namespace ToDoApp.Controllers
                 {
                     db.SaveChanges();
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Log.Error("Failed to create comment. Error: " + ex.Message);
                 }
@@ -41,12 +38,11 @@ namespace ToDoApp.Controllers
         public ActionResult Edit(int id)
         {
             Comment comment = db.Comments.FirstOrDefault(x => x.CommentId == id);
-            if (comment == null)
+            if(comment == null)
                 return RedirectToAction("Index", "Projects");
 
-
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator") || comment.UserId == currentUserId)
+            if(User.IsInRole("Administrator") || comment.UserId == currentUserId)
                 return View(comment);
 
             return RedirectToAction("Index", "Projects");
@@ -56,20 +52,18 @@ namespace ToDoApp.Controllers
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Edit(int id, Comment comment)
         {
-
             Comment item = db.Comments.Find(id);
             string currentUserId = User.Identity.GetUserId();
 
-            if (item == null)
+            if(item == null)
                 return RedirectToAction("Index", "Projects");
 
-            if (!(User.IsInRole("Administrator") || item.UserId == currentUserId))
+            if(!(User.IsInRole("Administrator") || item.UserId == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-
-                if (TryUpdateModel(item))
+                if(TryUpdateModel(item))
                 {
                     item.Content = comment.Content;
                     item.LastUpdate = DateTime.Now;
@@ -77,28 +71,26 @@ namespace ToDoApp.Controllers
                     {
                         db.SaveChanges();
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         Log.Error("Failed to edit comment. Error: " + ex.Message);
-                        }
+                    }
                     return RedirectToAction("Details", "Tasks", new { id = item.TaskId });
                 }
             }
             return View(comment);
-
         }
-
 
         [Authorize(Roles = "Administrator,Manager,User")]
         public ActionResult Delete(int commentId)
         {
             Comment item = db.Comments.Find(commentId);
-            if (item == null)
+            if(item == null)
                 return RedirectToAction("Index", "Projects");
 
             string currentUserId = User.Identity.GetUserId();
 
-            if (!(User.IsInRole("Administrator") || item.UserId == currentUserId))
+            if(!(User.IsInRole("Administrator") || item.UserId == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
             int taskId = item.TaskId;
@@ -107,12 +99,11 @@ namespace ToDoApp.Controllers
                 db.Comments.Remove(item);
                 db.SaveChanges();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Log.Error("Failed to delete comment. Error: " + ex.Message);
             }
             return RedirectToAction("Details", "Tasks", new { id = taskId });
         }
-
     }
 }

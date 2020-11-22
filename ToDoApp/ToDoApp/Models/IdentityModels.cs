@@ -33,7 +33,9 @@ namespace ToDoApp.Models
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
-        public ApplicationDbContext() : base("DBConnectionString", throwIfV1Schema: false) { }
+        public ApplicationDbContext() : base("DBConnectionString", throwIfV1Schema: false)
+        {
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -44,6 +46,5 @@ namespace ToDoApp.Models
         {
             return new ApplicationDbContext();
         }
-
     }
 }

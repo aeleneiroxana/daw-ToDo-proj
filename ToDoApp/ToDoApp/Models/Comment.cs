@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace ToDoApp.Models
 {
@@ -13,7 +9,6 @@ namespace ToDoApp.Models
         public int CommentId { get; set; }
 
         [Required]
-        [MaxLength(500)]
         public string Content { get; set; }
 
         [Required]
@@ -32,5 +27,4 @@ namespace ToDoApp.Models
 
         public virtual ApplicationUser User { get; set; }
     }
-
 }

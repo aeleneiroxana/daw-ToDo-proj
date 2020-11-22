@@ -1,6 +1,5 @@
 ﻿@model ToDoApp.Models.Team
 
-
 @{
     ViewBag.Title = "Details";
 }
@@ -26,7 +25,6 @@
             @Html.DisplayFor(model => model.User.UserName)
         </dd>
     </dl>
-
 </div>
 
 <br />
@@ -35,7 +33,7 @@
     {
         @Html.ActionLink("Edit", "Edit", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
         @Html.ActionLink("Delete", "Delete", "Teams", new { id = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
-        <br/>
+        <br />
         @Html.ActionLink("Add member ", "AddMember", new { teamId = Model.TeamId }, new { Style = "color:black; height: 15px; width: 60px; padding-bottom: 1px; padding-top:1px; padding-right: 10px; padding-left:10px; background-color: #54b86f; border-radius: 10px; text-decoration:none;" })
     }
 </div>
@@ -46,7 +44,6 @@
 <div>
     @Html.Partial("TeamMembers", (PagedList.IPagedList<ToDoApp.Models.ApplicationUser>)ViewBag.TeamMembers)
 </div>
-
 
 <style>
     html, body {

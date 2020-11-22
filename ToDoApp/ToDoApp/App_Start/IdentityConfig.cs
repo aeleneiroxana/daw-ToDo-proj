@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp
 {
@@ -38,6 +35,7 @@ namespace ToDoApp
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
+            this.PasswordHasher =  new OwnPasswordHasher();
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
@@ -79,7 +77,7 @@ namespace ToDoApp
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
             var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
+            if(dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
@@ -113,6 +111,7 @@ namespace ToDoApp
         base(store)
         {
         }
+
         public static ApplicationRoleManager
         Create(IdentityFactoryOptions<ApplicationRoleManager> options,
         IOwinContext context)

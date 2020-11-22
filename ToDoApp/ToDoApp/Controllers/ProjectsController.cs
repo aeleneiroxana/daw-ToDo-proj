@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
-using PagedList;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using PagedList;
 using ToDoApp.Models;
 
 namespace ToDoApp.Controllers
@@ -17,14 +17,14 @@ namespace ToDoApp.Controllers
         public ActionResult Index(int? i)
         {
             List<Project> projects;
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
                 projects = db.Projects.ToList().OrderBy(x => x.Title).ToList();
             }
             else
             {
-                if (User.IsInRole("Manager"))
+                if(User.IsInRole("Manager"))
                     ViewBag.HasRights = true;
                 else
                     ViewBag.HasRights = false;
@@ -40,11 +40,11 @@ namespace ToDoApp.Controllers
         public ActionResult Details(int id, int? i)
         {
             ViewBag.CurrentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.HasRights = true;
                 Project item = db.Projects.FirstOrDefault(x => x.ProjectId == id);
-                if (item != null)
+                if(item != null)
                 {
                     ViewBag.ProjectTasks = item.Tasks.ToList().OrderBy(x => x.Title).ToPagedList(i ?? 1, 5);
                     return View(item);
@@ -55,19 +55,17 @@ namespace ToDoApp.Controllers
 
             string currentUserId = User.Identity.GetUserId();
 
-
             List<Team> teams = db.Teams.ToList().FindAll(x => db.UsersToTeams.ToList().Exists(y => y.UserId == currentUserId && y.TeamId == x.TeamId));
             List<Project> projects = db.Projects.ToList().FindAll(x => teams.Exists(y => y.TeamId == x.TeamId));
 
-            if (projects.Exists(x => x.ProjectId == id))
+            if(projects.Exists(x => x.ProjectId == id))
             {
                 Project item = projects.FirstOrDefault(x => x.ProjectId == id);
 
-                if (item.Team.UserId == currentUserId)
+                if(item.Team.UserId == currentUserId)
                     ViewBag.HasRights = true;
                 else
                     ViewBag.HasRights = false;
-
 
                 ViewBag.ProjectTasks = item.Tasks.ToList().OrderBy(x => x.Title).ToPagedList(i ?? 1, 5);
                 return View(item);
@@ -81,7 +79,7 @@ namespace ToDoApp.Controllers
         {
             Project project = new Project();
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
             }
@@ -93,16 +91,14 @@ namespace ToDoApp.Controllers
             return View(project);
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
+        [Authorize(Roles = "Administrator, Manager")]
         [HttpPost]
         public ActionResult Create(Project project)
         {
-
             string currentUserId = User.Identity.GetUserId();
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-
                 project.LastUpdate = DateTime.Now;
                 try
                 {
@@ -110,14 +106,13 @@ namespace ToDoApp.Controllers
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Log.Error("Failed to create project. Error: " + ex.Message);
                     ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
-
                 }
             }
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.Teams = TeamsToSelectList(db.Teams.ToList());
             }
@@ -134,7 +129,7 @@ namespace ToDoApp.Controllers
         {
             Project project;
             string currentUserId = User.Identity.GetUserId();
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
             }
@@ -142,7 +137,7 @@ namespace ToDoApp.Controllers
             {
                 project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.Team.UserId == currentUserId);
             }
-            if (project != null)
+            if(project != null)
                 return View(project);
 
             return RedirectToAction("Index");
@@ -155,11 +150,11 @@ namespace ToDoApp.Controllers
             Project item = db.Projects.Find(id);
             string currentUserId = User.Identity.GetUserId();
 
-            if (User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
+            if(User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
             {
-                if (ModelState.IsValid)
+                if(ModelState.IsValid)
                 {
-                    if (TryUpdateModel(item))
+                    if(TryUpdateModel(item))
                     {
                         item.Description = project.Description;
                         item.Title = project.Title;
@@ -169,11 +164,10 @@ namespace ToDoApp.Controllers
                             return RedirectToAction("Index");
                         }
 
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
                             Log.Error("Failed to edit project. Error: " + ex.Message);
                             ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
-
                         }
                     }
                 }
@@ -182,23 +176,18 @@ namespace ToDoApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
-            string currentUserId = User.Identity.GetUserId();
 
-            if (User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
+            try
             {
-                try
-                {
-                    db.Projects.Remove(item);
-                    db.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Failed to delete project. Error: " + ex.Message);
-                }
+                db.Projects.Remove(item);
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Log.Error("Failed to delete project. Error: " + ex.Message);
             }
             return RedirectToAction("Index");
         }
@@ -208,7 +197,7 @@ namespace ToDoApp.Controllers
         {
             List<SelectListItem> selectList = new List<SelectListItem>();
 
-            foreach (var team in teams)
+            foreach(var team in teams)
             {
                 selectList.Add(new SelectListItem
                 {
@@ -220,6 +209,5 @@ namespace ToDoApp.Controllers
             selectList = selectList.OrderBy(x => x.Text).ToList();
             return selectList;
         }
-
     }
 }

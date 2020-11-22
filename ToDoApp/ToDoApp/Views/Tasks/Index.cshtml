@@ -94,7 +94,6 @@
                 </td>
             </tr>
         }
-
     </table>
     @Html.PagedListPager(Model, i=> Url.Action("Index","Tasks", new { i, search = Request.QueryString["search"]}))
 </div>
@@ -125,11 +124,9 @@
         border-bottom-left-radius: 12px;
         border-bottom-right-radius: 12px;
     }
-    
+
     .pagination-container{
         position: absolute;
         bottom: 1.5%;
     }
 </style>
-
-

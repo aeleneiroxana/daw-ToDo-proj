@@ -35,6 +35,7 @@ namespace ToDoApp.Models
         [Required]
         [Display(Name = "Code")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Remember this browser?")]
@@ -67,7 +68,6 @@ namespace ToDoApp.Models
 
     public class RegisterViewModel
     {
-
         [Required]
         [StringLength(30, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [Display(Name = "Username")]
