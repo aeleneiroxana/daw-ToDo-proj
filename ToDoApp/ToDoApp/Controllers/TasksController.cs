@@ -285,7 +285,7 @@ namespace ToDoApp.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
+        private IEnumerable<SelectListItem> MembersToSelectList(List<ApplicationUser> users)
         {
             List<SelectListItem> selectList = new List<SelectListItem>
             {

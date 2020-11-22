@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp
 {
@@ -34,6 +35,7 @@ namespace ToDoApp
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
+            this.PasswordHasher =  new OwnPasswordHasher();
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)

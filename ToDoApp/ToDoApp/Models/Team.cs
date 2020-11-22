@@ -15,7 +15,6 @@ namespace ToDoApp.Models
         [Index(IsUnique = true)]
         public string Title { get; set; }
 
-        //[Required]
         public string UserId { get; set; }
 
         [Required]

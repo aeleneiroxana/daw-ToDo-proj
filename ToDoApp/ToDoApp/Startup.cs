@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 [assembly: OwinStartupAttribute(typeof(ToDoApp.Startup))]
 
@@ -25,6 +26,7 @@ namespace ToDoApp
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            UserManager.PasswordHasher = new OwnPasswordHasher();
 
             if(!roleManager.RoleExists("Administrator"))
             {

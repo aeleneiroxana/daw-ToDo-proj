@@ -19,7 +19,6 @@ namespace ToDoApp.Models
         public int TeamId { get; set; }
 
         [Required]
-        [MaxLength(200)]
         public string Description { get; set; }
 
         [Required]

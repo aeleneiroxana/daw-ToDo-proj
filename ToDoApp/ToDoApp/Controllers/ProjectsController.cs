@@ -176,23 +176,18 @@ namespace ToDoApp.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
-            string currentUserId = User.Identity.GetUserId();
 
-            if(User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
+            try
             {
-                try
-                {
-                    db.Projects.Remove(item);
-                    db.SaveChanges();
-                }
-                catch(Exception ex)
-                {
-                    Log.Error("Failed to delete project. Error: " + ex.Message);
-                }
+                db.Projects.Remove(item);
+                db.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                Log.Error("Failed to delete project. Error: " + ex.Message);
             }
             return RedirectToAction("Index");
         }
