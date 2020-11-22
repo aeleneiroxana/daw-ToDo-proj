@@ -114,6 +114,7 @@ namespace ToDoApp.Controllers
 
         [Authorize(Roles = "Administrator,Manager")]
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Create(Task item)
         {
             Project project;

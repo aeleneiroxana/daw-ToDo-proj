@@ -77,6 +77,7 @@ namespace ToDoApp.Controllers
 
         [Authorize(Roles = "Administrator,Manager,User")]
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Create(Team team)
         {
             if(ModelState.IsValid)

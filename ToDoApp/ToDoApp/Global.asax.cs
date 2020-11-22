@@ -11,7 +11,6 @@ namespace ToDoApp
         protected void Application_Start()
         {
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ApplicationDbContext>());
-            //Database.SetInitializer(new DropCreateDatabaseAlways<ApplicationDbContext>());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
