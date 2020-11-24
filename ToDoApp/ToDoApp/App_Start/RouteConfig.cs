@@ -20,6 +20,13 @@ namespace ToDoApp
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "TasksDetails",
+                url: "{controller}/{action}/{title}",
+                defaults: new { controller = "Home", action = "Index", title = UrlParameter.Optional }
+            );
+
         }
     }
 }

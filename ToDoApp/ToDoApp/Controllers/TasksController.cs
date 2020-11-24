@@ -89,6 +89,71 @@ namespace ToDoApp.Controllers
             return View(item);
         }
 
+        [Authorize(Roles = "Administrator,Manager,User")]
+        public ActionResult DetailsByTitle(string title, int? i)
+        {
+            string currentUserId = User.Identity.GetUserId();
+            ViewBag.CurrentUserId = currentUserId;
+            Task itemFromDB = db.Database.SqlQuery<Task>($"Select * from Tasks where Title = '{title}';").FirstOrDefault();
+            if (itemFromDB == null)
+            {
+                return RedirectToAction("Index", "Projects");
+            }
+
+            Task item = db.Tasks.FirstOrDefault(x => x.TaskId == itemFromDB.TaskId);
+
+
+            if (User.IsInRole("Administrator"))
+            {
+                ViewBag.HasTaskRights = true;
+                ViewBag.HasRights = true;
+                if (item != null)
+                {
+                    ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
+                    ViewBag.NewComment = new Comment()
+                    {
+                        TaskId = item.TaskId,
+                        UserId = currentUserId
+                    };
+                    return View("Details", item);
+                }
+                else
+                    return RedirectToAction("Index", "Projects");
+            }
+            else
+            {
+                ViewBag.HasRights = false;
+                ViewBag.HasTaskRights = false;
+            }
+            if (item == null)
+                return RedirectToAction("Index", "Projects");
+
+            Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
+            if (project == null)
+                return RedirectToAction("Index", "Projects");
+
+            if (project.Team.UserId == currentUserId)
+                ViewBag.HasTaskRights = true;
+
+            ViewBag.CurrentUserId = currentUserId;
+
+            List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
+            List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
+
+            if (!members.Exists(x => x.Value == currentUserId))
+                return RedirectToAction("Index", "Projects");
+
+            ViewBag.NewComment = new Comment()
+            {
+                TaskId = item.TaskId,
+                UserId = currentUserId
+            };
+
+            ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
+            ;
+            return View("Details", item);
+        }
+
         [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Create(int projectId)
         {

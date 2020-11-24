@@ -11,7 +11,7 @@ namespace ToDoApp.Models
         public int TaskId { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Title { get; set; }
 
         [MaxLength(250)]
