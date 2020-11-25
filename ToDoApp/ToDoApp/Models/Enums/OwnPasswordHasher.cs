@@ -9,7 +9,7 @@ namespace ToDoApp.Models.Enums
         public string HashPassword(string password)
         {
 #pragma warning disable SCS0006
-            MD5 hash = MD5.Create();
+            SHA1 hash = SHA1.Create();
 #pragma warning restore SCS0006
 
             byte[] input = Encoding.Default.GetBytes(password);

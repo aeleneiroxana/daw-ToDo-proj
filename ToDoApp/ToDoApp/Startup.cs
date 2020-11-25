@@ -25,8 +25,10 @@ namespace ToDoApp
             context.Configuration.LazyLoadingEnabled = true;
 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            UserManager.PasswordHasher = new OwnPasswordHasher();
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context))
+            {
+                PasswordHasher = new OwnPasswordHasher()
+            };
 
             if(!roleManager.RoleExists("Administrator"))
             {
