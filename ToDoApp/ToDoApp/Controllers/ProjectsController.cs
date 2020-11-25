@@ -128,15 +128,7 @@ namespace ToDoApp.Controllers
         public ActionResult Edit(int id)
         {
             Project project;
-            string currentUserId = User.Identity.GetUserId();
-            if(User.IsInRole("Administrator"))
-            {
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
-            }
-            else
-            {
-                project = db.Projects.FirstOrDefault(x => x.ProjectId == id && x.Team.UserId == currentUserId);
-            }
+            project = db.Projects.FirstOrDefault(x => x.ProjectId == id);
             if(project != null)
                 return View(project);
 
@@ -148,46 +140,45 @@ namespace ToDoApp.Controllers
         public ActionResult Edit(int id, Project project)
         {
             Project item = db.Projects.Find(id);
-            string currentUserId = User.Identity.GetUserId();
 
-            if(User.IsInRole("Administrator") || item.Team.UserId == currentUserId)
+            if(ModelState.IsValid)
             {
-                if(ModelState.IsValid)
+                if(TryUpdateModel(item))
                 {
-                    if(TryUpdateModel(item))
+                    item.Description = project.Description;
+                    item.Title = project.Title;
+                    try
                     {
-                        item.Description = project.Description;
-                        item.Title = project.Title;
-                        try
-                        {
-                            db.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
 
-                        catch(Exception ex)
-                        {
-                            Log.Error("Failed to edit project. Error: " + ex.Message);
-                            ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
-                        }
+                    catch(Exception ex)
+                    {
+                        Log.Error("Failed to edit project. Error: " + ex.Message);
+                        ModelState.AddModelError("Title", "Title should be unique. The title you chose may have already been taken");
                     }
                 }
-                return View(project);
             }
-            return RedirectToAction("Index");
+            return View(project);
         }
 
         public ActionResult Delete(int id)
         {
             Project item = db.Projects.Find(id);
+            string currentUserId = User.Identity.GetUserId();
 
-            try
+            if(User.IsInRole("Administrator") || item.Team.UserId != currentUserId)
             {
-                db.Projects.Remove(item);
-                db.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                Log.Error("Failed to delete project. Error: " + ex.Message);
+                try
+                {
+                    db.Projects.Remove(item);
+                    db.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                    Log.Error("Failed to delete project. Error: " + ex.Message);
+                }
             }
             return RedirectToAction("Index");
         }
