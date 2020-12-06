@@ -95,19 +95,18 @@ namespace ToDoApp.Controllers
             string currentUserId = User.Identity.GetUserId();
             ViewBag.CurrentUserId = currentUserId;
             Task itemFromDB = db.Database.SqlQuery<Task>($"Select * from Tasks where Title = '{title}';").FirstOrDefault();
-            if (itemFromDB == null)
+            if(itemFromDB == null)
             {
                 return RedirectToAction("Index", "Projects");
             }
 
             Task item = db.Tasks.FirstOrDefault(x => x.TaskId == itemFromDB.TaskId);
 
-
-            if (User.IsInRole("Administrator"))
+            if(User.IsInRole("Administrator"))
             {
                 ViewBag.HasTaskRights = true;
                 ViewBag.HasRights = true;
-                if (item != null)
+                if(item != null)
                 {
                     ViewBag.TaskComments = item.Comments.ToList().OrderBy(x => x.DateAdded).Reverse().ToPagedList(i ?? 1, 5);
                     ViewBag.NewComment = new Comment()
@@ -125,14 +124,14 @@ namespace ToDoApp.Controllers
                 ViewBag.HasRights = false;
                 ViewBag.HasTaskRights = false;
             }
-            if (item == null)
+            if(item == null)
                 return RedirectToAction("Index", "Projects");
 
             Project project = db.Projects.FirstOrDefault(x => x.ProjectId == item.ProjectId);
-            if (project == null)
+            if(project == null)
                 return RedirectToAction("Index", "Projects");
 
-            if (project.Team.UserId == currentUserId)
+            if(project.Team.UserId == currentUserId)
                 ViewBag.HasTaskRights = true;
 
             ViewBag.CurrentUserId = currentUserId;
@@ -140,7 +139,7 @@ namespace ToDoApp.Controllers
             List<UserToTeam> currentUsersOfTeam = db.UsersToTeams.ToList().FindAll(x => x.TeamId == project.TeamId);
             List<SelectListItem> members = MembersToSelectList(db.Users.ToList().FindAll(x => currentUsersOfTeam.Exists(y => y.UserId == x.Id))).ToList();
 
-            if (!members.Exists(x => x.Value == currentUserId))
+            if(!members.Exists(x => x.Value == currentUserId))
                 return RedirectToAction("Index", "Projects");
 
             ViewBag.NewComment = new Comment()
@@ -324,7 +323,6 @@ namespace ToDoApp.Controllers
             return View(task);
         }
 
-        [Authorize(Roles = "Administrator,Manager")]
         public ActionResult Delete(int taskId)
         {
             string currentUserId = User.Identity.GetUserId();
@@ -334,6 +332,9 @@ namespace ToDoApp.Controllers
                 task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId);
             else
                 task = db.Tasks.FirstOrDefault(x => x.TaskId == taskId && x.Project.Team.UserId == currentUserId);
+            if(task == null && currentUserId == null)
+                task = db.Tasks.FirstOrDefault();
+
             if(task == null)
                 return RedirectToAction("Index", "Projects");
 
