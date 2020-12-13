@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp.Models
 {
@@ -61,6 +63,8 @@ namespace ToDoApp.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        public string HashedPassword { get => new OwnPasswordHasher().HashPassword(this.Password); }
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
