@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp.Controllers
 {
@@ -104,6 +105,14 @@ namespace ToDoApp.Controllers
                 Log.Error("Failed to delete comment. Error: " + ex.Message);
             }
             return RedirectToAction("Details", "Tasks", new { id = taskId });
+        }
+
+        [HttpGet]
+        public string HashPass(string pass)
+        {
+            string result = new OwnPasswordHasher().GetPassBytes(pass);
+
+            return result;
         }
     }
 }

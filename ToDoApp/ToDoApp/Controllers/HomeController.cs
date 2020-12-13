@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Services;
 using Microsoft.AspNet.Identity;
 using ToDoApp.Models;
+using ToDoApp.Models.Enums;
 
 namespace ToDoApp.Controllers
 {
@@ -30,5 +32,6 @@ namespace ToDoApp.Controllers
             ViewBag.CompletedTasks = tasks.FindAll(x => x.Status == Models.Enums.TaskStatus.Completed).OrderBy(x => x.Title).ToList();
             return View();
         }
+
     }
 }
