@@ -11,7 +11,7 @@ namespace ToDoApp.Models
         public int TeamId { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(4000)]
         [Index(IsUnique = true)]
         public string Title { get; set; }
 
