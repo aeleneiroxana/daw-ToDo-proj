@@ -10,7 +10,7 @@
             <hr style="color: black;" />
         </div>
         <div class="left-content-content">
-             @foreach (var item in ViewBag.InProgressTasks)
+             @foreach (var item in ViewBag.NotStartedTasks)
              {
             <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
                 <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
@@ -51,7 +51,7 @@
             <hr />
         </div>
         <div class="middle-content-content">
-            @foreach (var item in ViewBag.NotStartedTasks)
+            @foreach (var item in ViewBag.InProgressTasks)
             {
             <div style="width:96%;min-height:100px;background-color:#363636; padding-left: 5px; margin-bottom: 3%;margin-left:2%;margin-right:2%; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
                 <h4 style="color:white; text-align:center;">Project @item.Project.Title</h4>
